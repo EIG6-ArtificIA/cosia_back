@@ -1,3 +1,5 @@
-from django.db import models
+from django.contrib.gis.db import models
 
-# Create your models here.
+class PredictionsMap(models.Model):
+    raster_val = models.BigIntegerField()
+    geom = models.MultiPolygonField(srid=2154)

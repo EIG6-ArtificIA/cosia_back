@@ -80,6 +80,8 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'predictia_back',
         'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'PORT': 5433
     },
 }
 
