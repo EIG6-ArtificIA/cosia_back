@@ -1,5 +1,5 @@
 """
-WSGI config for predictia_back project.
+WSGI config for cosia_back project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'predictia_back.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cosia_back.settings')
 
 application = get_wsgi_application()
