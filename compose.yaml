@@ -1,0 +1,17 @@
+services:
+  postgis:
+    image: postgis/postgis:15-3.4
+    volumes:
+      - data:/data/db
+    env_file:
+      - ./env/db.env
+
+  backend:
+    build: .
+    env_file:
+      - ./env/backend.env
+    ports:
+      - "8000:80"
+
+volumes:
+  data:
