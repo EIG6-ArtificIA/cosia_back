@@ -7,7 +7,7 @@ services:
       - ./data:/var/lib/postgresql/data
       - ./docker/init-user-db.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     healthcheck:
       test:
         [
