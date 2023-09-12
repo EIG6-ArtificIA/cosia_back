@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import PredictedArea
+from .models import Territory
 
-admin.site.register(PredictedArea, admin.ModelAdmin)
+admin.site.register(Territory, admin.ModelAdmin)

@@ -4,7 +4,7 @@ services:
     env_file:
       - ./env/db.env
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
       - ./docker/init-user-db.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
       - "${POSTGRES_PORT}:5432"
@@ -29,4 +29,4 @@ services:
         condition: service_healthy
 
 volumes:
-  data:
+  db:

@@ -129,5 +129,4 @@ dmypy.json
 .pyre/
 
 # custom
-predictions_map/data
-data/
+db/
