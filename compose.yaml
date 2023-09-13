@@ -1,6 +1,7 @@
 services:
   postgis:
     image: postgis/postgis:15-3.4
+    restart: always
     env_file:
       - ./env/db.env
     volumes:
@@ -22,6 +23,8 @@ services:
     build: .
     env_file:
       - ./env/backend.env
+    volumes:
+      - .:/app:rw
     ports:
       - "8000:8000"
     depends_on:
