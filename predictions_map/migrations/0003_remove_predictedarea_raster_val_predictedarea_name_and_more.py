@@ -2,26 +2,24 @@
 
 from django.db import migrations, models
 
-
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('predictions_map', '0002_rename_predictionsmap_predictedarea'),
+        ("predictions_map", "0002_rename_predictionsmap_predictedarea"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='predictedarea',
-            name='raster_val',
+            model_name="predictedarea",
+            name="raster_val",
         ),
         migrations.AddField(
-            model_name='predictedarea',
-            name='name',
-            field=models.CharField(default='', max_length=200),
+            model_name="predictedarea",
+            name="name",
+            field=models.CharField(default="", max_length=200),
         ),
         migrations.AddField(
-            model_name='predictedarea',
-            name='status',
-            field=models.CharField(default='', max_length=100),
+            model_name="predictedarea",
+            name="status",
+            field=models.CharField(default="", max_length=100),
         ),
     ]
