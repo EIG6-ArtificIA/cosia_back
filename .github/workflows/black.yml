@@ -6,6 +6,7 @@ on:
 
 jobs:
   black:
+    name: Black check
     uses: RojerGS/python-black-check@master
     with:
       line-length: "88"
