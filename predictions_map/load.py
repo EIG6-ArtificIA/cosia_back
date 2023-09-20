@@ -14,6 +14,7 @@ predictionsmap_shp = (
     / "emprise_SaintNazaire_agglo.shp"
 )
 
+
 def run(verbose=True):
     lm = LayerMapping(
         Territory, predictionsmap_shp, predictionsmap_mapping, transform=False

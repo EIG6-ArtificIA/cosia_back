@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 
+
 class Migration(migrations.Migration):
     dependencies = [
         ("predictions_map", "0002_rename_predictionsmap_predictedarea"),

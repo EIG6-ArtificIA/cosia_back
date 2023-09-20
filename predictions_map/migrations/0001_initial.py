@@ -3,6 +3,7 @@
 import django.contrib.gis.db.models.fields
 from django.db import migrations, models
 
+
 class Migration(migrations.Migration):
     initial = True
 
