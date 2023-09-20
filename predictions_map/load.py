@@ -3,12 +3,20 @@ from django.contrib.gis.utils import LayerMapping
 from .models import Territory
 
 predictionsmap_mapping = {
-    'name': 'nom',
-    'geom': 'POLYGON',
+    "name": "nom",
+    "geom": "POLYGON",
 }
 
-predictionsmap_shp = Path(__file__).resolve().parent / 'data' / 'Saint-Nazaire' / 'emprise_SaintNazaire_agglo.shp'
+predictionsmap_shp = (
+    Path(__file__).resolve().parent
+    / "data"
+    / "Saint-Nazaire"
+    / "emprise_SaintNazaire_agglo.shp"
+)
+
 
 def run(verbose=True):
-    lm = LayerMapping(Territory, predictionsmap_shp, predictionsmap_mapping, transform=False)
+    lm = LayerMapping(
+        Territory, predictionsmap_shp, predictionsmap_mapping, transform=False
+    )
     lm.save(strict=True, verbose=verbose)

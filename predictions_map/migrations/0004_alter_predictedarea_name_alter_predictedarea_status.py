@@ -4,20 +4,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('predictions_map', '0003_remove_predictedarea_raster_val_predictedarea_name_and_more'),
+        (
+            "predictions_map",
+            "0003_remove_predictedarea_raster_val_predictedarea_name_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='predictedarea',
-            name='name',
+            model_name="predictedarea",
+            name="name",
             field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
-            model_name='predictedarea',
-            name='status',
+            model_name="predictedarea",
+            name="status",
             field=models.CharField(max_length=100),
         ),
     ]

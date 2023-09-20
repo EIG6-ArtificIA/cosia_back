@@ -5,19 +5,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='PredictionsMap',
+            name="PredictionsMap",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('raster_val', models.BigIntegerField()),
-                ('geom', django.contrib.gis.db.models.fields.MultiPolygonField(srid=2154)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("raster_val", models.BigIntegerField()),
+                (
+                    "geom",
+                    django.contrib.gis.db.models.fields.MultiPolygonField(srid=2154),
+                ),
             ],
         ),
     ]
