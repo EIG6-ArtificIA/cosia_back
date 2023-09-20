@@ -12,7 +12,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Black
-        uses: RojerGS/python-black-check@master
+      - uses: rickstaa/action-black@v1
         with:
-          line-length: "88"
+          black_args: ". --check"
