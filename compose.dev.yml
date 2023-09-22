@@ -5,10 +5,10 @@ services:
     env_file:
       - ./env/db.env
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data:z
       - ./docker/init-user-db.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - 5435:5432
     healthcheck:
       test:
         [
@@ -20,13 +20,15 @@ services:
       retries: 3
 
   backend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - ./env/backend.env
     volumes:
       - .:/app:rw
     ports:
-      - "8000:8000"
+      - 8000:8000
     depends_on:
       postgis:
         condition: service_healthy

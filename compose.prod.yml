@@ -1,0 +1,38 @@
+services:
+  postgis:
+    image: postgis/postgis:15-3.4
+    restart: always
+    env_file:
+      - ./env/db.env
+    volumes:
+      - ./db:/var/lib/postgresql/data
+      - ./docker/init-user-db.sh:/docker-entrypoint-initdb.d/init.sh
+    ports:
+      - 5435:5432
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: gunicorn cosia_back.wsgi:application --bind 0.0.0.0:8000
+    env_file:
+      - ./env/backend.env
+    expose:
+      - 8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    depends_on:
+      - postgis
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    depends_on:
+      - web
+
+volumes:
+  db:
+  static_volume:

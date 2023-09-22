@@ -86,3 +86,4 @@ venv/
 .vscode/
 
 *.log
+nginx/*
