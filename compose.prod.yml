@@ -5,7 +5,7 @@ services:
     env_file:
       - ./env/db.env
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
       - ./docker/init-user-db.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
       - 5435:5432
