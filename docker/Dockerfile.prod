@@ -33,11 +33,6 @@ RUN mkdir $HOME
 RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
-# RUN mkdir /var/lib/postgresql
-# RUN mkdir /var/lib/postgresql/data
-# RUN chown postgres:postgres /var/lib/postgresql/data
-# 
-# USER postgres
 
 COPY requirements.txt $APP_HOME
 RUN apt-get update -qq && apt-get install -y -qq python3-pip 
@@ -48,7 +43,6 @@ RUN pip3 install -r requirements.txt
 
 # copy entrypoint.sh
 COPY ./docker/entrypoint.sh .
-# RUN sed -i 's/\r$//g' /app/entrypoint.sh
 RUN chmod +x /home/app/web/entrypoint.sh
 
 # copy project

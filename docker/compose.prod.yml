@@ -1,19 +1,19 @@
 services:
   postgis:
-    image: postgis/postgis:15-3.4
+    build:
+      context: ./postgis
     restart: always
     env_file:
       - ./env/db.env
     volumes:
       - db:/var/lib/postgresql/data
-      - ./docker/init-user-db.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
       - 5435:5432
 
   web:
     build:
-      context: .
-      dockerfile: Dockerfile.prod
+      context: ..
+      dockerfile: docker/Dockerfile.prod
     command: gunicorn cosia_back.wsgi:application --bind 0.0.0.0:8000
     env_file:
       - ./env/backend.env
