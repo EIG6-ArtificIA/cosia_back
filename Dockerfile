@@ -33,5 +33,7 @@ RUN python3 -m pip install -U pip
 RUN python3 -m pip install -U setuptools
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
+COPY ./entrypoint.sh .
+RUN chmod +x /code/entrypoint.sh
 COPY . /app
-CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000" ]
+ENTRYPOINT ["/code/entrypoint.sh"]
