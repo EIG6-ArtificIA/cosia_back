@@ -6,23 +6,13 @@
 
 ### Install lib
 
-1. Create env files in docker directory
+1. Create .env file in docker directory
 
 ```
-# docker/env/db.env
+# .env
 
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=cosia_db
-POSTGRES_PORT=5432
-```
-
-```
-# docker/env/backend.env
-
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_PORT=5432
+PGPASSWORD=postgres
+PGDATABASE=cosia_db
 ```
 
 2. Compose up with docker

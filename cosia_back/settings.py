@@ -79,11 +79,11 @@ WSGI_APPLICATION = "cosia_back.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": "cosia_db",
-        "USER": os.environ["POSTGRES_USER"],
-        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "HOST": "postgis",
-        "PORT": os.environ["POSTGRES_PORT"],
+        "NAME": os.environ["POSTGRES_DB"] or "cosia_db",
+        "USER": os.environ["POSTGRES_USER"] or "postgres",
+        "PASSWORD": os.environ["POSTGRES_PASSWORD"] or "postgres",
+        "HOST": os.environ["POSTGRES_HOST"] or "postgis",
+        "PORT": os.environ["POSTGRES_PORT"] or 5432,
     },
 }
 
