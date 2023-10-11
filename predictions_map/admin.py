@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Territory
+from .models import Department
 
-admin.site.register(Territory, admin.ModelAdmin)
+admin.site.register(Department, admin.ModelAdmin)

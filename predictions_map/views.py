@@ -4,9 +4,9 @@ from rest_framework import permissions
 from predictions_map.serializers import (
     UserSerializer,
     GroupSerializer,
-    TerritorySerializer,
+    DepartmentSerializer,
 )
-from predictions_map.models import Territory
+from predictions_map.models import Department
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -29,10 +29,10 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class TerritoryViewSet(viewsets.ModelViewSet):
+class DepartmentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Territories to be viewed or edited
+    API endpoint that allows Departments to be viewed or edited
     """
 
-    queryset = Territory.objects.all()
-    serializer_class = TerritorySerializer
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer

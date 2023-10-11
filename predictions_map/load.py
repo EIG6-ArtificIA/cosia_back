@@ -1,6 +1,6 @@
 from pathlib import Path
 from django.contrib.gis.utils import LayerMapping
-from .models import Territory
+from .models import Department
 
 predictionsmap_mapping = {
     "name": "nom",
@@ -17,6 +17,6 @@ predictionsmap_shp = (
 
 def run(verbose=True):
     lm = LayerMapping(
-        Territory, predictionsmap_shp, predictionsmap_mapping, transform=False
+        Department, predictionsmap_shp, predictionsmap_mapping, transform=False
     )
     lm.save(strict=True, verbose=verbose)

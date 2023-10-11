@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from predictions_map.models import Territory
+from predictions_map.models import Department
 from rest_framework import serializers
 
 
@@ -15,7 +15,12 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ["url", "name"]
 
 
-class TerritorySerializer(serializers.HyperlinkedModelSerializer):
+class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Territory
-        fields = ["name", "status", "geom"]
+        model = Department
+        fields = [
+            "number",
+            "name",
+            "status",
+            "geom",
+        ]
