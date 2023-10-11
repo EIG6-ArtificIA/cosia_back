@@ -25,7 +25,7 @@ CMD ["/bin/bash"]
 
 FROM install_depency
 ENV LANG C.UTF-8
-EXPOSE 8000
+
 # create the appropriate directories
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
@@ -49,4 +49,4 @@ RUN chmod +x /home/app/web/entrypoint.sh
 COPY . .
 
 # run entrypoint.sh
-ENTRYPOINT [ "/home/app/web/entrypoint.sh"]
+ENTRYPOINT [ "/home/app/web/entrypoint.sh" ]
