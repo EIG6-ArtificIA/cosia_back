@@ -5,10 +5,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Department(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)
     geom = models.MultiPolygonField(srid=2154)
-    number = models.IntegerField(
-        unique=True, validators=[MinValueValidator(1), MaxValueValidator(976)]
-    )
+    number = models.CharField(unique=True, max_length=3)
     status = models.CharField(max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.number + " - " + self.name
+
+    class Meta:
+        ordering = ["number"]
 
 
 class DepartmentData(models.Model):
@@ -17,6 +21,21 @@ class DepartmentData(models.Model):
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
+
+    def __str__(self):
+        return (
+            self.department.number
+            + " - "
+            + self.department.name
+            + " - "
+            + str(self.year)
+        )
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        print("Hollande")
+        print(args)
+        print(kwargs)
 
 
 class DepartmentDataDownload(models.Model):
