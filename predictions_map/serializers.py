@@ -24,3 +24,28 @@ class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
             "status",
             "geom",
         ]
+
+
+class DepartmentDataSerializer(serializers.HyperlinkedModelSerializer):
+    pass
+    # class Meta:
+    #     model = Department
+    #     fields = [
+    #         "number",
+    #         "name",
+    #         "status",
+    #         "geom",
+    #     ]
+
+
+class DepartmentDataDownloadSerializer(serializers.HyperlinkedModelSerializer):
+    pass
+    # TODO
+    # class Meta:
+    #     model = Department
+    #     fields = [
+    #         "number",
+    #         "name",
+    #         "status",
+    #         "geom",
+    #     ]

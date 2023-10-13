@@ -3,10 +3,25 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Department(models.Model):
+    AVAILABLE = "available"
+    SOON_AVAILABLE = "soon"
+    NOT_AVAILABLE = "not_available"
+    STATUS_CHOICES = [
+        (AVAILABLE, "Disponible"),
+        (SOON_AVAILABLE, "Bientôt disponible"),
+        (NOT_AVAILABLE, "Pas disponible"),
+    ]
+
     name = models.CharField(max_length=200, null=False, blank=False)
     geom = models.MultiPolygonField(srid=2154)
     number = models.CharField(unique=True, max_length=3)
-    status = models.CharField(max_length=100, null=False, blank=False)
+    status = models.CharField(
+        choices=STATUS_CHOICES,
+        max_length=30,
+        null=False,
+        blank=False,
+        default=NOT_AVAILABLE,
+    )
 
     def __str__(self):
         return self.number + " - " + self.name
