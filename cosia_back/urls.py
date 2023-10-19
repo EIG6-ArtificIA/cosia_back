@@ -23,8 +23,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("departments/", views.department_list),
-    path("department_data/", views.department_data_list),
-    path("department_data_downloads/", views.department_data_download_list),
+    path("api/departments/", views.department_list),
+    path("api/department_data/", views.department_data_list),
+    path("api/department_data_downloads/", views.department_data_download_list),
 ]
 urlpatterns += staticfiles_urlpatterns()

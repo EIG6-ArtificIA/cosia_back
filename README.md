@@ -33,6 +33,19 @@ docker compose -f docker/compose.dev.yml run web python3 manage.py migrate
 docker compose -f docker/compose.dev.yml run web python3 manage.py createsuperuser
 ```
 
+4. Load departments
+
+```zsh
+docker compose -f docker/compose.dev.yml run web python3 shell
+```
+
+Then
+
+```python
+from predictions_map import load
+load.run()
+```
+
 Now, you can navigate on localhost:8000 :
 
 - [rest api](localhost:8000/)
