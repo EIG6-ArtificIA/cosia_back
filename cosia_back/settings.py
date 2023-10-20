@@ -25,7 +25,11 @@ SECRET_KEY = "django-insecure-_@zjr+@)kwv@(b^i0)8c^3x(487fcuh#28q^48xxx!##gq#ia$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "cosia.mut-dev.ign.fr",
+    "qlf-cosia.ign.fr",
+    "cosia.ign.fr",
+]
 
 # Application definition
 
