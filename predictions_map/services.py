@@ -1,5 +1,5 @@
-from predictions_map.models import Territory
+from predictions_map.models import Department
 
 
-def getAllTerritories():
-    return Territory.objects.all()
+def getAllDepartments():
+    return Department.objects.all()

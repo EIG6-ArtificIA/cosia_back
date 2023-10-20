@@ -1,0 +1,72 @@
+name: Release
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  black:
+    name: Black check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: rickstaa/action-black@v1
+        with:
+          black_args: ". --check"
+
+  get_tag:
+    name: Get tag
+    runs-on: ubuntu-latest
+    needs:
+      - black
+
+    outputs:
+      new_version: ${{ steps.get_version.outputs.SOURCE_TAG }}
+
+    steps:
+      - name: Branch name
+        id: get_version
+        run: |
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+
+  # Unabled because of IGN network... When l'usine logicielle is open on internet => let's go !
+  # trigger_deployment_pipeline:
+  #   name: Trigger deployment pipeline
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - publish_latest_on_dockerhub
+  #   steps:
+  #     - name: Fetch gitlab webhook
+  #       uses: joelwmale/webhook-action@master
+  #       with:
+  #         url: https://gitlab.gpf-tech.ign.fr/api/v4/projects/701/ref/master/trigger/pipeline?token=${{ secrets.DEV_TRIGGER_GITLAB_TOKEN }}
+
+  publish_version_on_dockerhub:
+    name: Publish new tag on dockerhub
+    runs-on: ubuntu-latest
+
+    needs:
+      - get_tag
+      - create_github_release
+
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: maximallain/cosia_back:${{needs.get_tag.outputs.SOURCE_TAG}}
+          file: docker/Dockerfile.prod

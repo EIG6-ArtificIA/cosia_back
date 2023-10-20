@@ -25,7 +25,11 @@ SECRET_KEY = "django-insecure-_@zjr+@)kwv@(b^i0)8c^3x(487fcuh#28q^48xxx!##gq#ia$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "cosia.mut-dev.ign.fr",
+    "qlf-cosia.ign.fr",
+    "cosia.ign.fr",
+]
 
 # Application definition
 
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "predictions_map.middleware.HealthCheckMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -119,7 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "/backend-static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
@@ -140,4 +145,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:1337",
+    "https://cosia.mut-dev.ign.fr",
+    "https://qlf-cosia.ign.fr",
+    "https://cosia.ign.fr",
 ]

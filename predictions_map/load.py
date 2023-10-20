@@ -1,22 +1,16 @@
 from pathlib import Path
 from django.contrib.gis.utils import LayerMapping
-from .models import Territory
+from .models import Department
 
-predictionsmap_mapping = {
-    "name": "nom",
-    "geom": "POLYGON",
-}
+predictionsmap_mapping = {"name": "NOM", "geom": "MULTIPOLYGON", "number": "INSEE_DEP"}
 
-predictionsmap_shp = (
-    Path(__file__).resolve().parent
-    / "data"
-    / "Saint-Nazaire"
-    / "emprise_SaintNazaire_agglo.shp"
+french_departments = (
+    Path(__file__).resolve().parent / "data" / "french_metropolitan_departments.gpkg"
 )
 
 
 def run(verbose=True):
     lm = LayerMapping(
-        Territory, predictionsmap_shp, predictionsmap_mapping, transform=False
+        Department, french_departments, predictionsmap_mapping, transform=False
     )
     lm.save(strict=True, verbose=verbose)

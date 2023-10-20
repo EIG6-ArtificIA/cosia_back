@@ -25,7 +25,7 @@ CMD ["/bin/bash"]
 
 FROM install_depency
 ENV LANG C.UTF-8
-EXPOSE 8000
+
 # create the appropriate directories
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
@@ -40,6 +40,11 @@ RUN python3 -m pip install -U pip
 RUN python3 -m pip install -U setuptools
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
+ENV POSTGRES_DB=${POSTGRES_DB}
+ENV POSTGRES_HOST=${POSTGRES_HOST}
+ENV POSTGRES_PORT=${POSTGRES_PORT}
+ENV POSTGRES_USER=${POSTGRES_USER}
+ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
 # copy entrypoint.sh
 COPY ./docker/entrypoint.sh .
@@ -49,4 +54,5 @@ RUN chmod +x /home/app/web/entrypoint.sh
 COPY . .
 
 # run entrypoint.sh
-ENTRYPOINT [ "/home/app/web/entrypoint.sh"]
+ENTRYPOINT [ "/home/app/web/entrypoint.sh" ]
+CMD [ "gunicorn", "cosia_back.wsgi:application", "--bind", "0.0.0.0:80" ]
