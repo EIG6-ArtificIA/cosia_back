@@ -46,11 +46,12 @@ class DepartmentData(models.Model):
             + str(self.year)
         )
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        print("Hollande")
-        print(args)
-        print(kwargs)
+    # TODO: update departements status
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     print("Hollande")
+    #     print(args)
+    #     print(kwargs)
 
 
 class DepartmentDataDownload(models.Model):
