@@ -142,4 +142,6 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:1337",
     "https://cosia.mut-dev.ign.fr",
+    "https://qlf-cosia.ign.fr",
+    "https://cosia.ign.fr",
 ]
