@@ -57,3 +57,28 @@ class DepartmentDataTestCase(TestCase):
         self.assertEqual(yonne_2015_data.department.name, "Yonne")
         self.assertEqual(yonne_2015_data.year, 2015)
         self.assertEqual(yonne_2015_data.download_link, "coucou")
+
+    def test_departement_department_status_is_available(self):
+        yonne_2015_data = DepartmentData.objects.first()
+        yonne = yonne_2015_data.department
+
+        self.assertEqual(yonne.status, Department.AVAILABLE)
+
+    def test_departement_department_status_is_not_available_when_data_deleted(self):
+        yonne = Department.objects.get(name="Yonne")
+        yonne_data = yonne.data
+
+        self.assertEqual(yonne_data.count(), 2)
+
+        yonne_data.first().delete()
+        yonne_data.last().delete()
+
+        self.assertEqual(yonne_data.count(), 0)
+
+        self.assertEqual(yonne.status, Department.NOT_AVAILABLE)
+
+    def test_year_validation(self):
+        pass
+
+    def test_download_link_validation(self):
+        pass
