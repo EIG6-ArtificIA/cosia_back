@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from predictions_map.models import Department, DepartmentData
+from predictions_map.tests.factories.department import DepartmentFactory
 from django.contrib.gis.geos import Polygon, MultiPolygon
 
 MULTI_POLYGON = MultiPolygon(
@@ -11,13 +12,8 @@ MULTI_POLYGON = MultiPolygon(
 
 class DepartmentTestCase(TestCase):
     def setUp(self):
-        Department.objects.create(
-            name="Finistère",
-            number="29",
-            geom=MULTI_POLYGON,
-            status=Department.SOON_AVAILABLE,
-        )
-        Department.objects.create(name="Côte d'Or", number="21", geom=MULTI_POLYGON)
+        DepartmentFactory(status=Department.SOON_AVAILABLE)
+        DepartmentFactory(name="Côte d'Or", number="21")
 
     def test_departements_are_correctly_created(self):
         departments_count = Department.objects.count()
@@ -32,8 +28,8 @@ class DepartmentTestCase(TestCase):
         self.assertEqual(finistere.geom, MULTI_POLYGON)
 
     def test_departement_default_status_is_not_available(self):
-        finistere = Department.objects.get(number="21")
-        self.assertEqual(finistere.status, Department.NOT_AVAILABLE)
+        cote_d_or = Department.objects.get(number="21")
+        self.assertEqual(cote_d_or.status, Department.NOT_AVAILABLE)
 
 
 class DepartmentDataTestCase(TestCase):
@@ -127,3 +123,14 @@ class DepartmentDataTestCase(TestCase):
         yonne_data = DepartmentData(department=yonne, year=2000)
 
         self.assertEqual(yonne_data.__str__(), "89 - Yonne - 2000")
+
+
+class DepartmentDataDownload(TestCase):
+    def setUp(self):
+        yonne = Department.objects.create(name="Yonne", number="89", geom=MULTI_POLYGON)
+        DepartmentData.objects.create(
+            department=yonne, download_link="coucou", year=2015
+        )
+        DepartmentData.objects.create(
+            department=yonne, download_link="coucou2", year=2018
+        )
