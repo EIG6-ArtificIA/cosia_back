@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from predictions_map.models import Department, DepartmentData
 from django.contrib.gis.geos import Polygon, MultiPolygon
@@ -78,7 +79,51 @@ class DepartmentDataTestCase(TestCase):
         self.assertEqual(yonne.status, Department.NOT_AVAILABLE)
 
     def test_year_validation(self):
-        pass
+        yonne = Department.objects.get(name="Yonne")
+        too_old = DepartmentData(
+            department=yonne, download_link="http://rigo.lo", year=1849
+        )
+
+        with self.assertRaises(ValidationError):
+            too_old.full_clean()
+
+        too_much_in_future = DepartmentData(
+            department=yonne, download_link="coucou", year=2101
+        )
+
+        with self.assertRaises(ValidationError):
+            too_much_in_future.full_clean()
+
+        min_date = DepartmentData(
+            department=yonne, download_link="http://rigo.lo", year=1850
+        )
+        min_date.full_clean()
+        max_date = DepartmentData(
+            department=yonne, download_link="http://allez.co", year=2100
+        )
+        max_date.full_clean()
 
     def test_download_link_validation(self):
-        pass
+        yonne = Department.objects.get(name="Yonne")
+        not_a_link = DepartmentData(
+            department=yonne, download_link="http://coucou", year=2000
+        )
+
+        with self.assertRaises(ValidationError):
+            not_a_link.full_clean()
+
+        http_link = DepartmentData(
+            department=yonne, download_link="http://coucou.co", year=2000
+        )
+        http_link.full_clean()
+
+        https_link = DepartmentData(
+            department=yonne, download_link="https://coucou.fr", year=2000
+        )
+        https_link.full_clean()
+
+    def test_str_property(self):
+        yonne = Department.objects.get(name="Yonne")
+        yonne_data = DepartmentData(department=yonne, year=2000)
+
+        self.assertEqual(yonne_data.__str__(), "89 - Yonne - 2000")

@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-_@zjr+@)kwv@(b^i0)8c^3x(487fcuh#28q^48xxx!##gq#ia$
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "localhost",
     "cosia.mut-dev.ign.fr",
     "qlf-cosia.ign.fr",
     "cosia.ign.fr",

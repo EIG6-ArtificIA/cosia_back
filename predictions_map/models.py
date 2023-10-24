@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, URLValidator
 
 
 class Department(models.Model):
@@ -36,7 +36,9 @@ class Department(models.Model):
 
 class DepartmentData(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    download_link = models.CharField(max_length=300)
+    download_link = models.CharField(
+        max_length=300, validators=[URLValidator(schemes=["http", "https"])]
+    )
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
