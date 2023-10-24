@@ -30,6 +30,9 @@ jobs:
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker/compose.dev.yml"
+        env:
+          PGPASSWORD: "postgres"
+          PGDATABASE: "cosia_db"
 
       - name: Run tests
         run: docker compose -f docker/compose.dev.yml exec web python3 manage.py test
