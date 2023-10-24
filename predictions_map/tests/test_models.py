@@ -1,18 +1,17 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from predictions_map.models import Department, DepartmentData
-from predictions_map.tests.factories.department import DepartmentFactory
-from django.contrib.gis.geos import Polygon, MultiPolygon
-
-MULTI_POLYGON = MultiPolygon(
-    Polygon(((0, 0), (0, 1), (1, 1), (0, 0))),
-    Polygon(((1, 1), (1, 2), (2, 2), (1, 1))),
+from predictions_map.models import Department, DepartmentData, DepartmentDataDownload
+from predictions_map.tests.factories import (
+    DepartmentDataFactory,
+    DepartmentFactory,
+    DepartmentDataDownloadFactory,
+    MULTI_POLYGON,
 )
 
 
 class DepartmentTestCase(TestCase):
     def setUp(self):
-        DepartmentFactory(status=Department.SOON_AVAILABLE)
+        DepartmentFactory(name="Finistère", number=29, status=Department.SOON_AVAILABLE)
         DepartmentFactory(name="Côte d'Or", number="21")
 
     def test_departements_are_correctly_created(self):
@@ -34,13 +33,9 @@ class DepartmentTestCase(TestCase):
 
 class DepartmentDataTestCase(TestCase):
     def setUp(self):
-        yonne = Department.objects.create(name="Yonne", number="89", geom=MULTI_POLYGON)
-        DepartmentData.objects.create(
-            department=yonne, download_link="coucou", year=2015
-        )
-        DepartmentData.objects.create(
-            department=yonne, download_link="coucou2", year=2018
-        )
+        yonne = DepartmentFactory(name="Yonne", number="89")
+        DepartmentDataFactory(department=yonne)
+        DepartmentDataFactory(department=yonne)
 
     def test_departements_data_are_correctly_created(self):
         departments_data_count = DepartmentData.objects.count()
@@ -48,12 +43,10 @@ class DepartmentDataTestCase(TestCase):
         self.assertEqual(departments_data_count, 2)
 
         yonne = Department.objects.get(name="Yonne")
-        yonne_2015_data = DepartmentData.objects.get(department=yonne, year=2015)
+        yonne_2015_data = DepartmentData.objects.filter(department=yonne).first()
 
         self.assertEqual(yonne_2015_data.department, yonne)
         self.assertEqual(yonne_2015_data.department.name, "Yonne")
-        self.assertEqual(yonne_2015_data.year, 2015)
-        self.assertEqual(yonne_2015_data.download_link, "coucou")
 
     def test_departement_department_status_is_available(self):
         yonne_2015_data = DepartmentData.objects.first()
@@ -75,62 +68,47 @@ class DepartmentDataTestCase(TestCase):
         self.assertEqual(yonne.status, Department.NOT_AVAILABLE)
 
     def test_year_validation(self):
-        yonne = Department.objects.get(name="Yonne")
-        too_old = DepartmentData(
-            department=yonne, download_link="http://rigo.lo", year=1849
-        )
+        too_old = DepartmentDataFactory(year=1849)
 
         with self.assertRaises(ValidationError):
             too_old.full_clean()
 
-        too_much_in_future = DepartmentData(
-            department=yonne, download_link="coucou", year=2101
-        )
+        too_much_in_future = DepartmentDataFactory(year=2101)
 
         with self.assertRaises(ValidationError):
             too_much_in_future.full_clean()
 
-        min_date = DepartmentData(
-            department=yonne, download_link="http://rigo.lo", year=1850
-        )
+        min_date = DepartmentDataFactory(year=1850)
         min_date.full_clean()
-        max_date = DepartmentData(
-            department=yonne, download_link="http://allez.co", year=2100
-        )
+
+        max_date = DepartmentDataFactory(year=2100)
         max_date.full_clean()
 
     def test_download_link_validation(self):
-        yonne = Department.objects.get(name="Yonne")
-        not_a_link = DepartmentData(
-            department=yonne, download_link="http://coucou", year=2000
-        )
+        not_a_link = DepartmentDataFactory(download_link="http://coucou")
 
         with self.assertRaises(ValidationError):
             not_a_link.full_clean()
 
-        http_link = DepartmentData(
-            department=yonne, download_link="http://coucou.co", year=2000
-        )
+        http_link = DepartmentDataFactory(download_link="http://coucou.co")
         http_link.full_clean()
 
-        https_link = DepartmentData(
-            department=yonne, download_link="https://coucou.fr", year=2000
-        )
+        https_link = DepartmentDataFactory(download_link="https://coucou.fr")
         https_link.full_clean()
 
     def test_str_property(self):
         yonne = Department.objects.get(name="Yonne")
-        yonne_data = DepartmentData(department=yonne, year=2000)
+        yonne_data = DepartmentDataFactory(department=yonne, year=2000)
 
         self.assertEqual(yonne_data.__str__(), "89 - Yonne - 2000")
 
 
-class DepartmentDataDownload(TestCase):
+class DepartmentDataDownloadTestCase(TestCase):
     def setUp(self):
-        yonne = Department.objects.create(name="Yonne", number="89", geom=MULTI_POLYGON)
-        DepartmentData.objects.create(
-            department=yonne, download_link="coucou", year=2015
-        )
-        DepartmentData.objects.create(
-            department=yonne, download_link="coucou2", year=2018
-        )
+        DepartmentDataDownloadFactory()
+        DepartmentDataDownloadFactory()
+
+    def test_departements_data_download_are_correctly_created(self):
+        departments_data_count = DepartmentDataDownload.objects.count()
+
+        self.assertEqual(departments_data_count, 2)
