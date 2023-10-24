@@ -15,7 +15,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-      command: python3 manage.py test
+    command: python3 manage.py test
+
     volumes:
       - ..:/app:rw
     ports:
