@@ -27,18 +27,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v2
+      - uses: isbang/compose-action@v1.5.1
         with:
-          python-version: 3.11
+          compose-file: "./docker/compose.dev.yml"
 
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install gdal-bin libgdal-dev
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run Tests
-        run: |
-          python manage.py test
+      - name: Run tests
+        run: docker compose -f docker/compose.dev.yml exec web python3 manage.py test
