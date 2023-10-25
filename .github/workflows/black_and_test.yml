@@ -24,7 +24,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     services:
-      postgis:
+      postgres:
         image: postgis/postgis:15-3.4
         env:
           POSTGRES_USER: postgres
@@ -60,3 +60,5 @@ jobs:
 
       - name: Run Tests
         run: python manage.py test
+        env:
+          POSTGRES_HOST: "postgres"
