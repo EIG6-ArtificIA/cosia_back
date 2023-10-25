@@ -47,7 +47,7 @@ jobs:
 
       - name: Install libs
         run: |
-          apt-get install -y -qq wget build-essential gdal-bin binutils libproj-dev libgdal-dev
+          apt-get install -y wget build-essential gdal-bin binutils libproj-dev libgdal-dev
 
       - name: Install dependencies
         run: |
