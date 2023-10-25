@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from predictions_map.models import Department
+from predictions_map.models import Department, DepartmentData
 from rest_framework import serializers
 
 
@@ -19,6 +19,7 @@ class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Department
         fields = [
+            "id",
             "number",
             "name",
             "status",
@@ -27,15 +28,16 @@ class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class DepartmentDataSerializer(serializers.HyperlinkedModelSerializer):
-    pass
-    # class Meta:
-    #     model = Department
-    #     fields = [
-    #         "number",
-    #         "name",
-    #         "status",
-    #         "geom",
-    #     ]
+    name = serializers.StringRelatedField(source="__str__")
+
+    class Meta:
+        model = DepartmentData
+        fields = [
+            "name",
+            "year",
+            "download_link",
+        ]
+        depth = 1
 
 
 class DepartmentDataDownloadSerializer(serializers.HyperlinkedModelSerializer):

@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-_@zjr+@)kwv@(b^i0)8c^3x(487fcuh#28q^48xxx!##gq#ia$
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "localhost",
     "cosia.mut-dev.ign.fr",
     "qlf-cosia.ign.fr",
     "cosia.ign.fr",
@@ -84,11 +85,11 @@ WSGI_APPLICATION = "cosia_back.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": os.environ["POSTGRES_DB"] or "cosia_db",
-        "USER": os.environ["POSTGRES_USER"] or "postgres",
-        "PASSWORD": os.environ["POSTGRES_PASSWORD"] or "postgres",
-        "HOST": os.environ["POSTGRES_HOST"] or "postgis",
-        "PORT": os.environ["POSTGRES_PORT"] or 5432,
+        "NAME": os.getenv("POSTGRES_DB", "cosia_db"),
+        "USER": os.getenv("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.getenv("POSTGRES_HOST", "postgis"),
+        "PORT": os.getenv("POSTGRES_PORT", 5432),
     },
 }
 

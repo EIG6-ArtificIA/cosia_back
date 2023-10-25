@@ -1,6 +1,9 @@
-name: Publish latest on Docker Hub
+name: Black and test
 
 on:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
       - master
@@ -57,31 +60,3 @@ jobs:
         run: python manage.py test
         env:
           POSTGRES_HOST: "localhost"
-
-  publish_latest_on_dockerhub:
-    name: Publish on dockerhub as latest
-    runs-on: ubuntu-latest
-
-    needs:
-      - black
-      - test
-
-    steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: maximallain/cosia_back:latest
-          file: docker/Dockerfile.prod

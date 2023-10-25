@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, URLValidator
 
 
 class Department(models.Model):
@@ -26,13 +26,19 @@ class Department(models.Model):
     def __str__(self):
         return self.number + " - " + self.name
 
+    @property
+    def data(self):
+        return self.departmentdata_set.all()
+
     class Meta:
         ordering = ["number"]
 
 
 class DepartmentData(models.Model):
-    department = models.ForeignKey("Department", on_delete=models.CASCADE)
-    download_link = models.CharField(max_length=300)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    download_link = models.CharField(
+        max_length=300, validators=[URLValidator(schemes=["http", "https"])]
+    )
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
@@ -46,12 +52,17 @@ class DepartmentData(models.Model):
             + str(self.year)
         )
 
-    # TODO: update departements status
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     print("Hollande")
-    #     print(args)
-    #     print(kwargs)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.department.status = Department.AVAILABLE
+        self.department.save()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        dep = self.department
+        if dep.data.count() == 0:
+            self.department.status = Department.NOT_AVAILABLE
+            self.department.save()
 
 
 class DepartmentDataDownload(models.Model):
