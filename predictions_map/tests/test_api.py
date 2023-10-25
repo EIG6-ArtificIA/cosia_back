@@ -15,6 +15,7 @@ DEPARTMENT_SERIALIZER_SCHEMA = {
     "geom": str,
 }
 DEPARTMENT_DATA_SERIALIZER_SCHEMA = {
+    "id": int,
     "year": int,
     "download_link": str,
     "department": {"number": str, "name": str},
@@ -48,20 +49,20 @@ class DepartmentApiTestCase(APITestCase):
         )
 
 
-class DepartmentDownloadApiTestCase(APITestCase):
+class DepartmentDataApiTestCase(APITestCase):
     def setUp(self):
-        code_dor = DepartmentFactory(name="Côte d'Or", number="21")
+        cote_dor = DepartmentFactory(name="Côte d'Or", number="21")
         finistere = DepartmentFactory(name="Finistère", number="29")
         manche = DepartmentFactory(name="Manche", number="50")
 
-        DepartmentDataFactory(
-            department=code_dor, year=2008, download_link="http://rigo.lo"
+        self.cote_dor_data = DepartmentDataFactory(
+            department=cote_dor, year=1850, download_link="http://rigo.lo"
         )
         DepartmentDataFactory(department=finistere)
         DepartmentDataFactory(department=manche)
 
     def test_get_data_departments(self):
-        response = self.client.get("/api/department_data/", format="json")
+        response = self.client.get("/api/department-data/", format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -69,33 +70,35 @@ class DepartmentDownloadApiTestCase(APITestCase):
         self.assertEqual(len(data), 3)
 
         first_element = data[0]
-        self.assertTrue(
-            check_structure(first_element, DEPARTMENT_DATA_SERIALIZER_SCHEMA)
-        )
 
         self.assertEquals(
             first_element,
             {
+                "id": self.cote_dor_data.id,
                 "department": {"number": "21", "name": "Côte d'Or"},
-                "year": 2008,
+                "year": 1850,
                 "download_link": "http://rigo.lo",
             },
         )
 
+        self.assertTrue(
+            check_structure(first_element, DEPARTMENT_DATA_SERIALIZER_SCHEMA)
+        )
 
-class DepartmentDownloadDataApiTestCase(APITestCase):
+
+class DepartmentDataDownloadApiTestCase(APITestCase):
     def setUp(self):
         self.department_data = DepartmentDataFactory()
 
     def test_get_data_departments(self):
         data = {
-            "department_data": f"{self.department_data.id}",
+            "department_data": self.department_data.id,
             "username": "Michel",
-            "organisation": "IGN",
+            "organization": "IGN",
             "email": "michel@allez.fcl",
         }
         response = self.client.post(
-            "/api/department_data_downloads/", data, format="json"
+            "/api/department-data-downloads/", data, format="json"
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -104,6 +107,6 @@ class DepartmentDownloadDataApiTestCase(APITestCase):
         dep_data_download = DepartmentDataDownload.objects.first()
 
         self.assertEquals(dep_data_download.username, "Michel")
-        self.assertEquals(dep_data_download.organisation, "IGN")
+        self.assertEquals(dep_data_download.organization, "IGN")
         self.assertEquals(dep_data_download.email, "michel@allez.fcl")
         self.assertEquals(dep_data_download.department_data, self.department_data)

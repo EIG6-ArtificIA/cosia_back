@@ -64,9 +64,12 @@ class DepartmentData(models.Model):
             self.department.status = Department.NOT_AVAILABLE
             self.department.save()
 
+    class Meta:
+        ordering = ["department__number"]
+
 
 class DepartmentDataDownload(models.Model):
     department_data = models.ForeignKey("DepartmentData", on_delete=models.CASCADE)
     username = models.CharField(max_length=120, null=False, blank=False)
-    organisation = models.CharField(max_length=300, null=False, blank=False)
+    organization = models.CharField(max_length=300, null=False, blank=False)
     email = models.CharField(max_length=150, null=False, blank=False)

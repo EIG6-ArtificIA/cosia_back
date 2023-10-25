@@ -51,6 +51,7 @@ class DepartmentDataSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = DepartmentData
         fields = [
+            "id",
             "year",
             "download_link",
             "department",
@@ -69,7 +70,7 @@ class DepartmentDataDownloadSerializer(serializers.ModelSerializer):
         fields = [
             "department_data",
             "username",
-            "organisation",
+            "organization",
             "email",
         ]
 

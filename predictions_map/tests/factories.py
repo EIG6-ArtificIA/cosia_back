@@ -45,5 +45,5 @@ class DepartmentDataDownloadFactory(DjangoModelFactory):
 
     department_data = SubFactory(DepartmentDataFactory)
     username = fake.name()
-    organisation = fake.company()
+    organization = fake.company()
     email = fake.email()
