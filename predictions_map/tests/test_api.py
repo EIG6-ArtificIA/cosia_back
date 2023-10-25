@@ -9,16 +9,15 @@ from predictions_map.tests.factories import (
 from predictions_map.utils import check_structure
 
 DEPARTMENT_SERIALIZER_SCHEMA = {
-    "id": int,
     "name": str,
     "number": str,
     "status": str,
     "geom": str,
 }
 DEPARTMENT_DATA_SERIALIZER_SCHEMA = {
-    "name": str,
     "year": int,
     "download_link": str,
+    "department": {"number": str, "name": str},
 }
 
 
@@ -41,7 +40,6 @@ class DepartmentApiTestCase(APITestCase):
         self.assertEquals(
             ain,
             {
-                "id": self.code_dor.id,
                 "name": "Ain",
                 "number": "01",
                 "status": "not_available",
@@ -78,7 +76,7 @@ class DepartmentDownloadApiTestCase(APITestCase):
         self.assertEquals(
             first_element,
             {
-                "name": "21 - Côte d'Or - 2008",
+                "department": {"number": "21", "name": "Côte d'Or"},
                 "year": 2008,
                 "download_link": "http://rigo.lo",
             },

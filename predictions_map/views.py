@@ -85,13 +85,9 @@ def department_data_download_list(request):
     """
     if request.method == "POST":
         serializer = DepartmentDataDownloadSerializer(data=request.data)
-        print(serializer)
-        print("---")
 
         if serializer.is_valid():
-            print(serializer)
             serializer.save()
-            # TODO add an information : data download link
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
