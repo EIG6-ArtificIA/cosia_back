@@ -27,7 +27,7 @@ class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class DepartmentDataSerializer(serializers.HyperlinkedModelSerializer):
+class DepartmentDataSerializer(serializers.ModelSerializer):
     name = serializers.StringRelatedField(source="__str__")
 
     class Meta:
@@ -36,14 +36,15 @@ class DepartmentDataSerializer(serializers.HyperlinkedModelSerializer):
             "name",
             "year",
             "download_link",
+            "department",
         ]
 
+    def to_representation(self, instance):
+        self.fields["department"] = DepartmentSerializer(read_only=True)
+        return super(DepartmentDataSerializer, self).to_representation(instance)
 
-class DepartmentDataDownloadSerializer(serializers.HyperlinkedModelSerializer):
-    department_data = serializers.HyperlinkedRelatedField(
-        view_name="department_data_detail"
-    )
 
+class DepartmentDataDownloadSerializer(serializers.ModelSerializer):
     class Meta:
         model = DepartmentDataDownload
         fields = [
