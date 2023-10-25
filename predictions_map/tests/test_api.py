@@ -1,10 +1,10 @@
 import json
 from rest_framework import status
 from rest_framework.test import APITestCase
+from predictions_map.models import DepartmentDataDownload
 from predictions_map.tests.factories import (
     DepartmentDataFactory,
     DepartmentFactory,
-    DepartmentDataDownloadFactory,
 )
 from predictions_map.utils import check_structure
 
@@ -83,3 +83,29 @@ class DepartmentDownloadApiTestCase(APITestCase):
                 "download_link": "http://rigo.lo",
             },
         )
+
+
+class DepartmentDownloadDataApiTestCase(APITestCase):
+    def setUp(self):
+        self.department_data = DepartmentDataFactory()
+
+    def test_get_data_departments(self):
+        data = {
+            "department_data": f"{self.department_data.id}",
+            "username": "Michel",
+            "organisation": "IGN",
+            "email": "michel@allez.fcl",
+        }
+        response = self.client.post(
+            "/api/department_data_downloads/", data, format="json"
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(DepartmentDataDownload.objects.count(), 1)
+
+        dep_data_download = DepartmentDataDownload.objects.first()
+
+        self.assertEquals(dep_data_download.username, "Michel")
+        self.assertEquals(dep_data_download.organisation, "IGN")
+        self.assertEquals(dep_data_download.email, "michel@allez.fcl")
+        self.assertEquals(dep_data_download.department_data, self.department_data)

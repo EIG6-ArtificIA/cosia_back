@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -35,9 +35,6 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 @api_view(["GET"])
 def department_list(request):
-    """
-    List all departments.
-    """
     if request.method == "GET":
         departments = Department.objects.all()
         serializer = DepartmentSerializer(departments, many=True)
@@ -46,9 +43,6 @@ def department_list(request):
 
 @api_view(["GET"])
 def department_detail(request, pk):
-    """
-    Retrieve a department.
-    """
     try:
         department = Department.objects.get(pk=pk)
     except Department.DoesNotExist:
@@ -61,9 +55,6 @@ def department_detail(request, pk):
 
 @api_view(["GET"])
 def department_data_list(request):
-    """
-    List all departments data.
-    """
     if request.method == "GET":
         department_data = DepartmentData.objects.all()
         serializer_context = {
@@ -75,6 +66,18 @@ def department_data_list(request):
         return Response(serializer.data)
 
 
+@api_view(["GET"])
+def department_data_detail(request, pk):
+    try:
+        department_data = DepartmentData.objects.get(pk=pk)
+    except DepartmentData.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == "GET":
+        serializer = DepartmentDataSerializer(department_data)
+        return JsonResponse(serializer.data)
+
+
 @api_view(["POST"])
 def department_data_download_list(request):
     """
@@ -82,8 +85,13 @@ def department_data_download_list(request):
     """
     if request.method == "POST":
         serializer = DepartmentDataDownloadSerializer(data=request.data)
+        print(serializer)
+        print("---")
+
         if serializer.is_valid():
+            print(serializer)
             serializer.save()
             # TODO add an information : data download link
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
