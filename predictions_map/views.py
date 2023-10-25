@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -44,13 +45,33 @@ def department_list(request):
 
 
 @api_view(["GET"])
+def department_detail(request, pk):
+    """
+    Retrieve a department.
+    """
+    try:
+        department = Department.objects.get(pk=pk)
+    except Department.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == "GET":
+        serializer = DepartmentSerializer(department)
+        return JsonResponse(serializer.data)
+
+
+@api_view(["GET"])
 def department_data_list(request):
     """
     List all departments data.
     """
     if request.method == "GET":
         department_data = DepartmentData.objects.all()
-        serializer = DepartmentDataSerializer(department_data, many=True)
+        serializer_context = {
+            "request": request,
+        }
+        serializer = DepartmentDataSerializer(
+            department_data, many=True, context=serializer_context
+        )
         return Response(serializer.data)
 
 

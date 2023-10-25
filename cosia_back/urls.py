@@ -14,17 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from predictions_map import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/departments/", views.department_list),
-    path("api/department_data/", views.department_data_list),
-    path("api/department_data_downloads/", views.department_data_download_list),
+    path("api/", include("predictions_map.urls")),
 ]
 urlpatterns += staticfiles_urlpatterns()
