@@ -7,7 +7,7 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 
 class DepartmentDataAdmin(admin.ModelAdmin):
-    list_display = ["department", "year", "download_link"]
+    list_display = ["department", "year", "download_link", "fileSize", "zipSize"]
 
 
 class DepartmentDataDownloadAdmin(admin.ModelAdmin):
