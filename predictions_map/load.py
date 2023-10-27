@@ -106,10 +106,8 @@ DEPARTMENT_DATA = [
 
 
 def department_data_load():
-    print("go !")
-    print(DEPARTMENT_DATA)
+    print("--- department data loading ---")
     for dd in DEPARTMENT_DATA:
-        print(dd)
         dep = Department.objects.get(number=dd.get("department_number"))
         print(dep)
         dep_data = DepartmentData(
@@ -122,6 +120,7 @@ def department_data_load():
         try:
             dep_data.full_clean()
             dep_data.save()
+            print("done !")
 
         except ValidationError as e:
             print("Error !")
