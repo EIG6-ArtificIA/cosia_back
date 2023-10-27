@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User, Group
 from django.http import Http404, HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_protect
+from django_ratelimit.decorators import ratelimit
+
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -78,6 +81,8 @@ def department_data_detail(request, pk):
         return JsonResponse(serializer.data)
 
 
+@ratelimit(key="ip", rate="10/m")
+@csrf_protect
 @api_view(["POST"])
 def department_data_download_list(request):
     """
