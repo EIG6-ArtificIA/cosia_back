@@ -65,7 +65,7 @@ jobs:
       - test
 
     outputs:
-      new_version: ${{ steps.get_version.outputs.SOURCE_TAG }}
+      new_version: ${{ steps.get_version.outputs.SOURCE_TAG#v }}
 
     steps:
       - name: Branch name
