@@ -50,12 +50,7 @@ class DepartmentSerializer(DynamicFieldsModelSerializer):
 class DepartmentDataSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = DepartmentData
-        fields = [
-            "id",
-            "year",
-            "download_link",
-            "department",
-        ]
+        fields = ["id", "year", "download_link", "department", "file_size", "zip_size"]
 
     def to_representation(self, instance):
         self.fields["department"] = DepartmentSerializer(

@@ -42,8 +42,8 @@ class DepartmentData(models.Model):
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
-    fileSize = models.CharField(max_length=10)
-    zipSize = models.CharField(max_length=10)
+    file_size = models.CharField(max_length=10)
+    zip_size = models.CharField(max_length=10)
 
     def __str__(self):
         return (

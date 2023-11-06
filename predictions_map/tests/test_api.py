@@ -19,6 +19,8 @@ DEPARTMENT_DATA_SERIALIZER_SCHEMA = {
     "year": int,
     "download_link": str,
     "department": {"number": str, "name": str},
+    "file_size": str,
+    "zip_size": str,
 }
 
 
@@ -78,6 +80,8 @@ class DepartmentDataApiTestCase(APITestCase):
                 "department": {"number": "21", "name": "Côte d'Or"},
                 "year": 1850,
                 "download_link": "http://rigo.lo",
+                "file_size": "8.4 Go",
+                "zip_size": "1.0 Go",
             },
         )
 

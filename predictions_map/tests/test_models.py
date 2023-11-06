@@ -47,6 +47,8 @@ class DepartmentDataTestCase(TestCase):
 
         self.assertEqual(yonne_2015_data.department, yonne)
         self.assertEqual(yonne_2015_data.department.name, "Yonne")
+        self.assertEqual(yonne_2015_data.zip_size, "1.0 Go")
+        self.assertEqual(yonne_2015_data.file_size, "8.4 Go")
 
     def test_departement_department_status_is_available(self):
         yonne_2015_data = DepartmentData.objects.first()
