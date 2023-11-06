@@ -91,7 +91,6 @@ jobs:
 
     needs:
       - get_tag
-      - create_github_release
 
     steps:
       - name: Set up QEMU
