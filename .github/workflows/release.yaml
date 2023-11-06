@@ -109,5 +109,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: maximallain/cosia_back:${{needs.get_tag.outputs.SOURCE_TAG}}
+          tags: maximallain/cosia_back:${{needs.get_tag.outputs.new_version}}
           file: docker/Dockerfile.prod
