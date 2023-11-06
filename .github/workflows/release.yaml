@@ -65,14 +65,15 @@ jobs:
       - test
 
     outputs:
-      new_version: ${{ steps.get_version.outputs.SOURCE_TAG }}
+      new_version: ${{ steps.get_version.outputs.VERSION }}
 
     steps:
       - name: Branch name
         id: get_version
         run: |
-          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
-
+          SOURCE_TAG=${GITHUB_REF#refs/tags/}
+          SOURCE_TAG_WITHOUT_V=${SOURCE_TAG#v}
+          echo ::set-output name=VERSION::${SOURCE_TAG_WITHOUT_V}
   # Unabled because of IGN network... When l'usine logicielle is open on internet => let's go !
   # trigger_deployment_pipeline:
   #   name: Trigger deployment pipeline
