@@ -37,6 +37,8 @@ class DepartmentDataFactory(DjangoModelFactory):
     department = SubFactory(DepartmentFactory)
     download_link = fake.uri()
     year = fake.random_int(1850, 2100)
+    file_size = "8,4 Go"
+    zip_size = "1,0 Go"
 
 
 class DepartmentDataDownloadFactory(DjangoModelFactory):
@@ -45,5 +47,5 @@ class DepartmentDataDownloadFactory(DjangoModelFactory):
 
     department_data = SubFactory(DepartmentDataFactory)
     username = fake.name()
-    organisation = fake.company()
+    organization = fake.company()
     email = fake.email()

@@ -7,11 +7,11 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 
 class DepartmentDataAdmin(admin.ModelAdmin):
-    list_display = ["department", "year", "download_link"]
+    list_display = ["department", "year", "download_link", "file_size", "zip_size"]
 
 
 class DepartmentDataDownloadAdmin(admin.ModelAdmin):
-    list_display = ["department_data", "username", "organisation", "email"]
+    list_display = ["department_data", "username", "organization", "email"]
 
 
 admin.site.register(Department, DepartmentAdmin)
