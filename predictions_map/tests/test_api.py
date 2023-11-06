@@ -80,8 +80,8 @@ class DepartmentDataApiTestCase(APITestCase):
                 "department": {"number": "21", "name": "Côte d'Or"},
                 "year": 1850,
                 "download_link": "http://rigo.lo",
-                "file_size": "8.4 Go",
-                "zip_size": "1.0 Go",
+                "file_size": "8,4 Go",
+                "zip_size": "1,0 Go",
             },
         )
 

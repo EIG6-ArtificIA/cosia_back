@@ -1,5 +1,10 @@
 from django.contrib.gis.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator, URLValidator
+from django.core.validators import (
+    MinValueValidator,
+    MaxValueValidator,
+    URLValidator,
+    RegexValidator,
+)
 
 
 class Department(models.Model):
@@ -35,6 +40,11 @@ class Department(models.Model):
 
 
 class DepartmentData(models.Model):
+    FILE_VALIDATOR = RegexValidator(
+        r"^\d{1,3},?\d{0,1} [GM]o$",
+        "Veuillez entrer un texte de type 'XX,X Go' ou 'XXX,X Mo'",
+    )
+
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     download_link = models.CharField(
         max_length=300, validators=[URLValidator(schemes=["http", "https"])]
@@ -42,8 +52,8 @@ class DepartmentData(models.Model):
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
-    file_size = models.CharField(max_length=10)
-    zip_size = models.CharField(max_length=10)
+    file_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
+    zip_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
 
     def __str__(self):
         return (

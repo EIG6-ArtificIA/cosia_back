@@ -47,8 +47,8 @@ class DepartmentDataTestCase(TestCase):
 
         self.assertEqual(yonne_2015_data.department, yonne)
         self.assertEqual(yonne_2015_data.department.name, "Yonne")
-        self.assertEqual(yonne_2015_data.zip_size, "1.0 Go")
-        self.assertEqual(yonne_2015_data.file_size, "8.4 Go")
+        self.assertEqual(yonne_2015_data.zip_size, "1,0 Go")
+        self.assertEqual(yonne_2015_data.file_size, "8,4 Go")
 
     def test_departement_department_status_is_available(self):
         yonne_2015_data = DepartmentData.objects.first()
@@ -99,6 +99,37 @@ class DepartmentDataTestCase(TestCase):
         https_link.full_clean()
 
     def test_str_property(self):
+        yonne = Department.objects.get(name="Yonne")
+        yonne_data = DepartmentDataFactory(department=yonne, year=2000)
+
+        self.assertEqual(yonne_data.__str__(), "89 - Yonne - 2000")
+
+    def test_size_validator_property(self):
+        wrong_format = ["120,56 Mo", "0,0 GO", "0.0 Go"]
+        right_format = [
+            "0,0 Go",
+            "8,6 Mo",
+            "10 Go",
+            "120 Mo",
+            "120,5 Mo",
+        ]
+
+        for wrong in wrong_format:
+            file_must_be_wrong = DepartmentDataFactory(file_size=wrong)
+            with self.assertRaises(ValidationError):
+                file_must_be_wrong.full_clean()
+
+            zip_must_be_wrong = DepartmentDataFactory(zip_size=wrong)
+            with self.assertRaises(ValidationError):
+                zip_must_be_wrong.full_clean()
+
+        for right in right_format:
+            file_must_be_right = DepartmentDataFactory(file_size=right)
+            file_must_be_right.full_clean()
+
+            zip_must_be_right = DepartmentDataFactory(file_size=right)
+            zip_must_be_right.full_clean()
+
         yonne = Department.objects.get(name="Yonne")
         yonne_data = DepartmentDataFactory(department=yonne, year=2000)
 
