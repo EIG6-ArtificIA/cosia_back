@@ -110,13 +110,13 @@ def department_data_load():
     for dd in DEPARTMENT_DATA:
         dep = Department.objects.get(number=dd.get("department_number"))
         print(dep)
-        dep_data = DepartmentData(
+        (dep_data, _) = DepartmentData.objects.get_or_create(
             department=dep,
             year=dd.get("year"),
-            download_link=dd.get("link"),
-            file_size=dd.get("size"),
-            zip_size=dd.get("zip_size"),
         )
+        dep_data.download_link = dd.get("link")
+        dep_data.file_size = dd.get("size")
+        dep_data.zip_size = dd.get("zip_size")
         try:
             dep_data.full_clean()
             dep_data.save()

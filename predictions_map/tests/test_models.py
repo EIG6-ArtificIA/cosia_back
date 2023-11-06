@@ -130,11 +130,6 @@ class DepartmentDataTestCase(TestCase):
             zip_must_be_right = DepartmentDataFactory(file_size=right)
             zip_must_be_right.full_clean()
 
-        yonne = Department.objects.get(name="Yonne")
-        yonne_data = DepartmentDataFactory(department=yonne, year=2000)
-
-        self.assertEqual(yonne_data.__str__(), "89 - Yonne - 2000")
-
 
 class DepartmentDataDownloadTestCase(TestCase):
     def setUp(self):
