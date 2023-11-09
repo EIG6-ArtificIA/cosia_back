@@ -126,3 +126,13 @@ def department_data_load():
             print("Error !")
             print(dd)
             print(e)
+
+
+dom_tom_mapping = {"name": "nom", "geom": "MULTIPOLYGON", "number": "numéro"}
+dom_departments = Path(__file__).resolve().parent / "data" / "modified_dom_tom.gpkg"
+
+
+def dom_tom_load(verbose=True):
+    print("--- DOM-TOM loading ---")
+    lm = LayerMapping(Department, dom_departments, dom_tom_mapping, transform=False)
+    lm.save(strict=True, verbose=verbose)
