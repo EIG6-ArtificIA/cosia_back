@@ -73,8 +73,8 @@ class DepartmentData(models.Model):
         super().delete(*args, **kwargs)
         dep = self.department
         if dep.data.count() == 0:
-            self.department.status = Department.NOT_AVAILABLE
-            self.department.save()
+            dep.status = Department.NOT_AVAILABLE
+            dep.save()
 
     class Meta:
         ordering = ["department__number"]

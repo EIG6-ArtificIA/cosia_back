@@ -9,6 +9,11 @@ class DepartmentAdmin(admin.ModelAdmin):
 class DepartmentDataAdmin(admin.ModelAdmin):
     list_display = ["department", "year", "download_link", "file_size", "zip_size"]
 
+    def delete_queryset(self, request, queryset):
+        for department_data in queryset:
+            print(department_data)
+            department_data.delete()
+
 
 class DepartmentDataDownloadAdmin(admin.ModelAdmin):
     list_display = ["department_data", "username", "organization", "email"]
