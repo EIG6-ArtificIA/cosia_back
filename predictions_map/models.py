@@ -35,6 +35,14 @@ class Department(models.Model):
     def data(self):
         return self.departmentdata_set.all()
 
+    @property
+    def geom_geojson(self):
+        return self.geom.geojson
+
+    @property
+    def centroid_geojson(self):
+        return self.geom.centroid.geojson
+
     class Meta:
         ordering = ["number"]
 
