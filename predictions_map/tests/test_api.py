@@ -12,8 +12,10 @@ DEPARTMENT_SERIALIZER_SCHEMA = {
     "name": str,
     "number": str,
     "status": str,
-    "geom": str,
+    "geom_geojson": str,
+    "centroid_geojson": str,
 }
+
 DEPARTMENT_DATA_SERIALIZER_SCHEMA = {
     "id": int,
     "year": int,
@@ -26,7 +28,7 @@ DEPARTMENT_DATA_SERIALIZER_SCHEMA = {
 
 class DepartmentApiTestCase(APITestCase):
     def setUp(self):
-        self.code_dor = DepartmentFactory(name="Ain", number="01")
+        self.ain = DepartmentFactory(name="Ain", number="01")
         DepartmentFactory.create_batch(3)
 
     def test_get_departments(self):
@@ -46,7 +48,8 @@ class DepartmentApiTestCase(APITestCase):
                 "name": "Ain",
                 "number": "01",
                 "status": "not_available",
-                "geom": str(self.code_dor.geom),
+                "geom_geojson": str(self.ain.geom_geojson),
+                "centroid_geojson": str(self.ain.centroid_geojson),
             },
         )
 
