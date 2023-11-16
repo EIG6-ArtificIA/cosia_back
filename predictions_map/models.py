@@ -62,6 +62,7 @@ class DepartmentData(models.Model):
     )
     file_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
     zip_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
+    s3_object_name = models.CharField(max_length=300, blank=True)
 
     def __str__(self):
         return (
