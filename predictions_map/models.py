@@ -6,6 +6,8 @@ from django.core.validators import (
     RegexValidator,
 )
 
+from predictions_map.s3_client import S3Client
+
 
 class Department(models.Model):
     AVAILABLE = "available"
@@ -54,6 +56,7 @@ class DepartmentData(models.Model):
     )
 
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    # TODO remove it once front uses s3_download_url
     download_link = models.CharField(
         max_length=300, validators=[URLValidator(schemes=["http", "https"])]
     )

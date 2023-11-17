@@ -33,6 +33,16 @@ def department_detail(request, pk):
         return JsonResponse(serializer.data)
 
 
+DEPARTMENT_DATA_FIELDS = [
+    "id",
+    "year",
+    "download_link",
+    "department",
+    "file_size",
+    "zip_size",
+]
+
+
 @api_view(["GET"])
 def department_data_list(request):
     if request.method == "GET":
@@ -41,7 +51,10 @@ def department_data_list(request):
             "request": request,
         }
         serializer = DepartmentDataSerializer(
-            department_data, many=True, context=serializer_context
+            department_data,
+            many=True,
+            context=serializer_context,
+            fields=DEPARTMENT_DATA_FIELDS,
         )
         return Response(serializer.data)
 
@@ -54,7 +67,9 @@ def department_data_detail(request, pk):
         return HttpResponse(status=404)
 
     if request.method == "GET":
-        serializer = DepartmentDataSerializer(department_data)
+        serializer = DepartmentDataSerializer(
+            department_data, fields=DEPARTMENT_DATA_FIELDS
+        )
         return JsonResponse(serializer.data)
 
 
@@ -71,5 +86,6 @@ def department_data_download_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

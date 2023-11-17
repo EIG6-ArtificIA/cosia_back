@@ -1,11 +1,8 @@
 from boto3 import client
-import wget
 from progressbar.progressbar import ProgressBar
 import os
 
-from predictions_map.models import DepartmentData
 
-# TODO move  into env var
 S3_HOST = os.getenv("S3_HOST")
 S3_REGION_NAME = os.getenv("S3_REGION_NAME")
 S3_BUCKET = os.getenv("S3_BUCKET")
@@ -16,12 +13,6 @@ S3_SECRET_ACCESS_KEY = os.getenv("S3_SECRET_ACCESS_KEY")
 class S3Client:
     @classmethod
     def getS3Client(cls):
-        print("Chek !")
-        print(S3_ACCESS_KEY_ID)
-        print(S3_SECRET_ACCESS_KEY)
-        print(S3_HOST)
-        print(S3_REGION_NAME)
-        print(S3_BUCKET)
         return client(
             endpoint_url=S3_HOST,
             aws_access_key_id=S3_ACCESS_KEY_ID,
@@ -43,6 +34,14 @@ class S3Client:
             size = "{:,}".format(obj["Size"])
             print(f"{obj['Key']} - Size : {size}")
 
+    @classmethod
+    def getObjectDownloadUrl(cls, key):
+        s3Client = cls.getS3Client()
+        oneHour = 3600
+        return s3Client.generate_presigned_url(
+            "get_object", Params={"Bucket": S3_BUCKET, "Key": key}, ExpiresIn=oneHour
+        )
+
 
 class S3Upload:
     def __init__(self):
@@ -51,35 +50,9 @@ class S3Upload:
     def upload_callback(self, size):
         self.pg.update(self.pg.currval + size)
 
-    def upload(self, file, bucket, key):
+    def upload(self, file, key):
         self.pg = ProgressBar(maxval=os.stat(file).st_size)
         self.pg.start()
 
         with open(file, "rb") as data:
-            self.s3.upload_fileobj(data, bucket, key, Callback=self.upload_callback)
-
-
-def clean(file_path):
-    os.remove(file_path)
-
-
-def __run__():
-    s3Upload = S3Upload()
-
-    for departmentData in DepartmentData.objects.all():
-        print(f"--- {departmentData} ---")
-
-        zip_file_path = wget.download(departmentData.download_link, "tmp")
-
-        dep_number_with_3_characters = departmentData.department.number.zfill(3)
-        s3_object_name = (
-            f"CoSIA_D{dep_number_with_3_characters}_{departmentData.year}.zip"
-        )
-        s3Upload.upload(zip_file_path, S3_BUCKET, s3_object_name)
-
-        departmentData.s3_object_name = s3_object_name
-        departmentData.full_clean()
-        departmentData.save()
-
-        clean(zip_file_path)
-        print(f"\nDone for {departmentData} !")
+            self.s3.upload_fileobj(data, S3_BUCKET, key, Callback=self.upload_callback)

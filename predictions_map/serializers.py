@@ -1,6 +1,8 @@
 from predictions_map.models import Department, DepartmentData, DepartmentDataDownload
 from rest_framework import serializers
 
+from predictions_map.s3_client import S3Client
+
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
     """
@@ -38,7 +40,20 @@ class DepartmentSerializer(DynamicFieldsModelSerializer):
 class DepartmentDataSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = DepartmentData
-        fields = ["id", "year", "download_link", "department", "file_size", "zip_size"]
+        fields = [
+            "id",
+            "year",
+            "download_link",
+            "department",
+            "file_size",
+            "zip_size",
+            "s3_download_url",
+        ]
+
+    s3_download_url = serializers.SerializerMethodField("get_s3_download_url")
+
+    def get_s3_download_url(self, obj):
+        return S3Client.getObjectDownloadUrl(obj.s3_object_name)
 
     def to_representation(self, instance):
         self.fields["department"] = DepartmentSerializer(
