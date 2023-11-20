@@ -1,6 +1,8 @@
 import json
+from unittest.mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
+
 from predictions_map.models import DepartmentDataDownload
 from predictions_map.tests.factories import (
     DepartmentDataFactory,
@@ -103,13 +105,16 @@ class DepartmentDataDownloadApiTestCase(APITestCase):
     def setUp(self):
         self.department_data = DepartmentDataFactory()
 
-    def test_get_data_departments(self):
+    # Mock S3Client.generate_presigned_url
+    @patch("predictions_map.s3_client.S3Client")
+    def test_get_data_departments(self, mock_S3Client):
         data = {
             "department_data": self.department_data.id,
             "username": "Michel",
             "organization": "IGN",
             "email": "michel@allez.fcl",
         }
+        mock_S3Client.get_object_download_url.return_value = "http://download.fr"
         response = self.client.post(
             "/api/department-data-downloads/", data, format="json"
         )

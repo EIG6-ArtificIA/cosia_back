@@ -12,7 +12,7 @@ S3_SECRET_ACCESS_KEY = os.getenv("S3_SECRET_ACCESS_KEY")
 
 class S3Client:
     @classmethod
-    def getS3Client(cls):
+    def get_s3_client(cls):
         return client(
             endpoint_url=S3_HOST,
             aws_access_key_id=S3_ACCESS_KEY_ID,
@@ -22,21 +22,21 @@ class S3Client:
         )
 
     @classmethod
-    def getAllObjectsInBucket(cls):
-        client = cls.getS3Client()
+    def get_all_objects_in_bucket(cls):
+        client = cls.get_s3_client()
         response = client.list_objects(Bucket=S3_BUCKET)
         return response["Contents"]
 
     @classmethod
-    def printFormatedAllObjectsInBucket(cls):
-        contents = cls.getAllObjectsInBucket()
+    def print_formated_all_objects_in_bucket(cls):
+        contents = cls.get_all_objects_in_bucket()
         for obj in contents:
             size = "{:,}".format(obj["Size"])
             print(f"{obj['Key']} - Size : {size}")
 
     @classmethod
-    def getObjectDownloadUrl(cls, key):
-        s3Client = cls.getS3Client()
+    def get_object_download_url(cls, key):
+        s3Client = cls.get_s3_client()
         oneHour = 3600
         return s3Client.generate_presigned_url(
             "get_object", Params={"Bucket": S3_BUCKET, "Key": key}, ExpiresIn=oneHour
@@ -45,7 +45,7 @@ class S3Client:
 
 class S3Upload:
     def __init__(self):
-        self.s3 = S3Client.getS3Client()
+        self.s3 = S3Client.get_s3_client()
 
     def upload_callback(self, size):
         self.pg.update(self.pg.currval + size)

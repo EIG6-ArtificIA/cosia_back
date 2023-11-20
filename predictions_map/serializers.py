@@ -56,7 +56,7 @@ class DepartmentDataSerializer(DynamicFieldsModelSerializer):
         if obj.s3_object_name is None:
             return ValueError("This Download Data has no s3_object_name")
 
-        return S3Client.getObjectDownloadUrl(obj.s3_object_name)
+        return S3Client.get_object_download_url(obj.s3_object_name)
 
     def to_representation(self, instance):
         self.fields["department"] = DepartmentSerializer(

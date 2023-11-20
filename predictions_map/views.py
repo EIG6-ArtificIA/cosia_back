@@ -80,9 +80,6 @@ def department_data_detail(request, pk):
 @csrf_protect
 @api_view(["POST"])
 def department_data_download_list(request):
-    """
-    Create a department data download.
-    """
     if request.method == "POST":
         serializer = DepartmentDataDownloadSerializer(data=request.data)
 
