@@ -64,7 +64,7 @@ class DepartmentDataApiTestCase(APITestCase):
             department=cote_dor, year=1850, download_link="http://rigo.lo"
         )
         DepartmentDataFactory(department=finistere)
-        DepartmentDataFactory(department=manche)
+        DepartmentDataFactory(department=manche, s3_object_name="")
 
     def test_get_data_departments(self):
         response = self.client.get("/api/department-data/", format="json")
@@ -72,7 +72,7 @@ class DepartmentDataApiTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = json.loads(response.content)
-        self.assertEqual(len(data), 3)
+        self.assertEqual(len(data), 2)
 
         first_element = data[0]
 
@@ -90,6 +90,12 @@ class DepartmentDataApiTestCase(APITestCase):
 
         self.assertTrue(
             check_structure(first_element, DEPARTMENT_DATA_SERIALIZER_SCHEMA)
+        )
+
+        second_element = data[1]
+        self.assertEquals(
+            second_element["department"],
+            {"number": "29", "name": "Finistère"},
         )
 
 

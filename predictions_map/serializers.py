@@ -53,6 +53,9 @@ class DepartmentDataSerializer(DynamicFieldsModelSerializer):
     s3_download_url = serializers.SerializerMethodField("get_s3_download_url")
 
     def get_s3_download_url(self, obj):
+        if obj.s3_object_name is None:
+            return ValueError("This Download Data has no s3_object_name")
+
         return S3Client.getObjectDownloadUrl(obj.s3_object_name)
 
     def to_representation(self, instance):

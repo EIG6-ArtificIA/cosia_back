@@ -4,6 +4,7 @@ import os
 
 from predictions_map.models import DepartmentData
 from predictions_map.s3_client import S3Upload
+from predictions_map.utils import get_formatted_file_size
 
 
 def clean(file_path):
@@ -24,7 +25,9 @@ def __run__():
             )
             s3Upload.upload(zip_file_path, s3_object_name)
 
+            zip_size = get_formatted_file_size(zip_file_path)
             departmentData.s3_object_name = s3_object_name
+            departmentData.zip_size = zip_size
             departmentData.full_clean()
             departmentData.save()
 

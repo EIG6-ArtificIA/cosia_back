@@ -1,3 +1,6 @@
+from os.path import getsize
+
+
 def check_structure(struct, schema):
     if isinstance(struct, dict) and isinstance(schema, dict):
         # struct is a dict of types or other dicts
@@ -13,3 +16,24 @@ def check_structure(struct, schema):
     else:
         # struct is neither a dict, nor list, not type
         return False
+
+
+def format_file_size(file_size):
+    if file_size < 1000:
+        return f"{file_size} o"
+
+    size_in_KB = file_size / (2**10)
+    if size_in_KB < 1000:
+        return "%.1f Ko" % size_in_KB
+
+    size_in_MB = size_in_KB / (2**10)
+    if size_in_MB < 100:
+        return "%.1f Mo" % size_in_MB
+
+    size_in_GB = size_in_MB / (2**10)
+    return "%.1f Go" % size_in_GB
+
+
+def get_formatted_file_size(file_path):
+    file_size = getsize(file_path)
+    return format_file_size(file_size)

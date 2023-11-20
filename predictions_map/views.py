@@ -1,10 +1,11 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_protect
 from django_ratelimit.decorators import ratelimit
-
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 from predictions_map.serializers import (
     DepartmentSerializer,
     DepartmentDataSerializer,
@@ -33,7 +34,7 @@ def department_detail(request, pk):
         return JsonResponse(serializer.data)
 
 
-DEPARTMENT_DATA_FIELDS = [
+READ_ONLY_DEPARTMENT_DATA_FIELDS = [
     "id",
     "year",
     "download_link",
@@ -46,15 +47,17 @@ DEPARTMENT_DATA_FIELDS = [
 @api_view(["GET"])
 def department_data_list(request):
     if request.method == "GET":
-        department_data = DepartmentData.objects.all()
-        serializer_context = {
-            "request": request,
-        }
+        department_data_where_s3_object_name_is_not_empty = (
+            DepartmentData.objects.exclude(Q(s3_object_name__exact=""))
+        )
+
+        serializer_context = {"request": request}
+
         serializer = DepartmentDataSerializer(
-            department_data,
+            department_data_where_s3_object_name_is_not_empty,
             many=True,
             context=serializer_context,
-            fields=DEPARTMENT_DATA_FIELDS,
+            fields=READ_ONLY_DEPARTMENT_DATA_FIELDS,
         )
         return Response(serializer.data)
 
@@ -68,7 +71,7 @@ def department_data_detail(request, pk):
 
     if request.method == "GET":
         serializer = DepartmentDataSerializer(
-            department_data, fields=DEPARTMENT_DATA_FIELDS
+            department_data, fields=READ_ONLY_DEPARTMENT_DATA_FIELDS
         )
         return JsonResponse(serializer.data)
 
