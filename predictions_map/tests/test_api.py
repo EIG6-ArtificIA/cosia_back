@@ -106,7 +106,10 @@ class DepartmentDataDownloadApiTestCase(APITestCase):
         self.department_data = DepartmentDataFactory()
 
     # Mock S3Client.generate_presigned_url
-    @patch("predictions_map.s3_client.S3Client")
+    @patch(
+        "predictions_map.s3_client.S3Client.get_object_download_url",
+        return_value="http://download.fr",
+    )
     def test_get_data_departments(self, mock_S3Client):
         data = {
             "department_data": self.department_data.id,
@@ -114,7 +117,6 @@ class DepartmentDataDownloadApiTestCase(APITestCase):
             "organization": "IGN",
             "email": "michel@allez.fcl",
         }
-        mock_S3Client.get_object_download_url.return_value = "http://download.fr"
         response = self.client.post(
             "/api/department-data-downloads/", data, format="json"
         )
