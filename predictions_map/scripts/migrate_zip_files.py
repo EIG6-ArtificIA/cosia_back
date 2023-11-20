@@ -8,7 +8,10 @@ from predictions_map.utils import get_formatted_file_size
 
 
 def clean(file_path):
-    os.remove(file_path)
+    try:
+        os.remove(file_path)
+    except FileNotFoundError:
+        print(f"File not found : {file_path}")
 
 
 def __run__():
@@ -31,7 +34,8 @@ def __run__():
             departmentData.full_clean()
             departmentData.save()
 
-            clean(zip_file_path)
             print(f"\nDone for {departmentData} !")
         except HTTPError as e:
             print(e)
+        finally:
+            clean(zip_file_path)

@@ -36,11 +36,11 @@ class FormatFileSizeTestCase(TestCase):
     def test_format_file_size(self):
         value_and_expected_value_list = [
             (500, "500 o"),
-            (1_000, "1.0 Ko"),
-            (500_000, "488.3 Ko"),
-            (1_000_000, "976.6 Ko"),
-            (75_405_000, "71.9 Mo"),
-            (1_254_405_000, "1.2 Go"),
+            (1_000, "1,0 Ko"),
+            (500_000, "488,3 Ko"),
+            (1_000_000, "976,6 Ko"),
+            (75_405_000, "71,9 Mo"),
+            (1_254_405_000, "1,2 Go"),
         ]
 
         for tuple in value_and_expected_value_list:

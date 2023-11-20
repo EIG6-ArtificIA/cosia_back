@@ -24,14 +24,14 @@ def format_file_size(file_size):
 
     size_in_KB = file_size / (2**10)
     if size_in_KB < 1000:
-        return "%.1f Ko" % size_in_KB
+        return ("%.1f Ko" % size_in_KB).replace(".", ",")
 
     size_in_MB = size_in_KB / (2**10)
     if size_in_MB < 100:
-        return "%.1f Mo" % size_in_MB
+        return ("%.1f Mo" % size_in_MB).replace(".", ",")
 
     size_in_GB = size_in_MB / (2**10)
-    return "%.1f Go" % size_in_GB
+    return ("%.1f Go" % size_in_GB).replace(".", ",")
 
 
 def get_formatted_file_size(file_path):
