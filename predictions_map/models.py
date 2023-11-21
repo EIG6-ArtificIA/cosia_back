@@ -6,8 +6,6 @@ from django.core.validators import (
     RegexValidator,
 )
 
-from predictions_map.s3_client import S3Client
-
 
 class Department(models.Model):
     AVAILABLE = "available"
