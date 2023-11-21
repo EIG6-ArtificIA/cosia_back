@@ -27,7 +27,7 @@ def format_file_size(file_size):
         return ("%.1f Ko" % size_in_KB).replace(".", ",")
 
     size_in_MB = size_in_KB / (2**10)
-    if size_in_MB < 100:
+    if size_in_MB < 1000:
         return ("%.1f Mo" % size_in_MB).replace(".", ",")
 
     size_in_GB = size_in_MB / (2**10)
