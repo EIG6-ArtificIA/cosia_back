@@ -35,14 +35,15 @@ SOON_AVAILABLE_DEPARTMENTS = [
 
 
 def __main__():
-    # Clean
+    print("Clean old soon available departments")
     soon_available_departments = Department.objects.filter(
         status=Department.SOON_AVAILABLE
     )
     soon_available_departments.update(status=Department.NOT_AVAILABLE)
 
-    # Update all soon departments
+    print("Update soon available departments")
     soon_available_departments = Department.objects.filter(
         number__in=SOON_AVAILABLE_DEPARTMENTS
     )
     soon_available_departments.update(status=Department.SOON_AVAILABLE)
+    print("Tout est bon, allez la suite !")
