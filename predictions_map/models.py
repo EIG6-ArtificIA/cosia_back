@@ -54,6 +54,7 @@ class DepartmentData(models.Model):
     )
 
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    # TODO remove it once front uses s3_download_url
     download_link = models.CharField(
         max_length=300, validators=[URLValidator(schemes=["http", "https"])]
     )
@@ -62,6 +63,7 @@ class DepartmentData(models.Model):
     )
     file_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
     zip_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
+    s3_object_name = models.CharField(max_length=300, blank=True)
 
     def __str__(self):
         return (

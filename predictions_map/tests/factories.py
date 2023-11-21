@@ -39,6 +39,7 @@ class DepartmentDataFactory(DjangoModelFactory):
     year = fake.random_int(1850, 2100)
     file_size = "8,4 Go"
     zip_size = "1,0 Go"
+    s3_object_name = f"Cosia_Df{fake.random_int(1, 95)}_{year}.zip"
 
 
 class DepartmentDataDownloadFactory(DjangoModelFactory):
