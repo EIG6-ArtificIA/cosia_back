@@ -16,7 +16,13 @@ class DepartmentDataAdmin(admin.ModelAdmin):
 
 
 class DepartmentDataDownloadAdmin(admin.ModelAdmin):
-    list_display = ["department_data", "username", "organization", "email"]
+    list_display = [
+        "department_data",
+        "username",
+        "organization",
+        "email",
+        "created_at",
+    ]
 
 
 admin.site.register(Department, DepartmentAdmin)

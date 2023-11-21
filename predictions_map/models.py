@@ -95,3 +95,4 @@ class DepartmentDataDownload(models.Model):
     username = models.CharField(max_length=120, null=False, blank=False)
     organization = models.CharField(max_length=300, null=False, blank=False)
     email = models.CharField(max_length=150, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
