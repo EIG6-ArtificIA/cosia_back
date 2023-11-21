@@ -14,18 +14,22 @@ def clean(file_path):
         print(f"File not found : {file_path}")
 
 
+def compute_s3_object_name(departmentData):
+    dep_number_with_3_characters = departmentData.department.number.zfill(3)
+    return f"CoSIA_D{dep_number_with_3_characters}_{departmentData.year}.zip"
+
+
 def __run__():
     s3Upload = S3Upload()
 
     for departmentData in DepartmentData.objects.all():
         print(f"--- {departmentData} ---")
+        zip_file_path = ""
+
         try:
             zip_file_path = wget.download(departmentData.download_link, "tmp")
 
-            dep_number_with_3_characters = departmentData.department.number.zfill(3)
-            s3_object_name = (
-                f"CoSIA_D{dep_number_with_3_characters}_{departmentData.year}.zip"
-            )
+            s3_object_name = compute_s3_object_name(departmentData)
             s3Upload.upload(zip_file_path, s3_object_name)
 
             zip_size = get_formatted_file_size(zip_file_path)
