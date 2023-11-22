@@ -1,6 +1,8 @@
 from urllib.error import HTTPError
 import wget
 import os
+from django.db.models import Q
+
 
 from predictions_map.models import DepartmentData
 from predictions_map.s3_client import S3Upload
@@ -19,10 +21,17 @@ def compute_s3_object_name(departmentData):
     return f"CoSIA_D{dep_number_with_3_characters}_{departmentData.year}.zip"
 
 
-def __run__():
+def migrate_zip_files(only_departments_without_s3_object_name=False):
     s3Upload = S3Upload()
 
-    for departmentData in DepartmentData.objects.all():
+    if only_departments_without_s3_object_name:
+        selected_departement_data = DepartmentData.objects.filter(
+            Q(s3_object_name__exact="")
+        )
+    else:
+        selected_departement_data = DepartmentData.objects.all()
+
+    for departmentData in selected_departement_data:
         print(f"--- {departmentData} ---")
         zip_file_path = ""
 

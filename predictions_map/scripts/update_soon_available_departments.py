@@ -34,7 +34,7 @@ SOON_AVAILABLE_DEPARTMENTS = [
 ]
 
 
-def __main__():
+def update_soon_available_departments():
     print("Clean old soon available departments")
     soon_available_departments = Department.objects.filter(
         status=Department.SOON_AVAILABLE
