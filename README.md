@@ -8,11 +8,16 @@
 
 1. Create .env file in docker directory
 
-```
+```bash
 # .env
 
-PGPASSWORD=postgres
-PGDATABASE=cosia_db
+PGPASSWORD = postgres
+PGDATABASE = cosia_db
+S3_ACCESS_KEY_ID = # get rw s3 access key
+S3_SECRET_ACCESS_KEY = # get rw s3 secret key
+S3_HOST = ...
+S3_REGION_NAME = ...
+S3_BUCKET = ...
 ```
 
 2. Compose up with docker
@@ -43,7 +48,9 @@ Then
 
 ```python
 from predictions_map import load
-load.run()
+load.department_load()
+load.department_data_load()
+load.dom_tom_load()
 ```
 
 Now, you can navigate on localhost:8000 :
@@ -75,3 +82,9 @@ Now, you can navigate on localhost:1337 :
 
 - [rest api](localhost:1337/)
 - [admin](localhost:1337/admin)
+
+## Tests
+
+```zsh
+docker compose up -f docker/compose.dev.yml run web python3 test
+```
