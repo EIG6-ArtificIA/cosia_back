@@ -74,7 +74,7 @@ class DepartmentDataApiTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = json.loads(response.content)
-        self.assertEqual(len(data), 2)
+        self.assertEqual(len(data), 3)
 
         first_element = data[0]
 
@@ -99,6 +99,17 @@ class DepartmentDataApiTestCase(APITestCase):
             second_element["department"],
             {"number": "29", "name": "Finistère"},
         )
+
+    # TODO remove this test once front is using s3_object_name
+    def test_get_data_departments_with_only_with_s3_object_name(self):
+        response = self.client.get(
+            "/api/department-data/?only_with_s3_object_name", format="json"
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = json.loads(response.content)
+        self.assertEqual(len(data), 2)
 
 
 class DepartmentDataDownloadApiTestCase(APITestCase):
