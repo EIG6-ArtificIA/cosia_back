@@ -44,17 +44,23 @@ READ_ONLY_DEPARTMENT_DATA_FIELDS = [
 ]
 
 
+# TODO Once front is using s3_object_name, remove if/else
 @api_view(["GET"])
 def department_data_list(request):
     if request.method == "GET":
-        department_data_where_s3_object_name_is_not_empty = (
-            DepartmentData.objects.exclude(Q(s3_object_name__exact=""))
-        )
+        only_with_s3_object_name = request.query_params.get("only_with_s3_object_name")
+        print(only_with_s3_object_name)
+        if only_with_s3_object_name is None:
+            department_data = DepartmentData.objects.all()
+        else:
+            department_data = DepartmentData.objects.exclude(
+                Q(s3_object_name__exact="")
+            )
 
         serializer_context = {"request": request}
 
         serializer = DepartmentDataSerializer(
-            department_data_where_s3_object_name_is_not_empty,
+            department_data,
             many=True,
             context=serializer_context,
             fields=READ_ONLY_DEPARTMENT_DATA_FIELDS,
