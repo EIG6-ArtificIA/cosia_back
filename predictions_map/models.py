@@ -54,10 +54,6 @@ class DepartmentData(models.Model):
     )
 
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    # TODO remove it once front uses s3_download_url
-    download_link = models.CharField(
-        max_length=300, validators=[URLValidator(schemes=["http", "https"])]
-    )
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
