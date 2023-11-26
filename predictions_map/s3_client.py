@@ -35,6 +35,11 @@ class S3Client:
             print(f"{obj['Key']} - Size : {size}")
 
     @classmethod
+    def get_all_objects_name_in_bucket(cls):
+        contents = cls.get_all_objects_in_bucket()
+        return list(map(lambda x: x["Key"], contents))
+
+    @classmethod
     def get_object_download_url(cls, key):
         s3Client = cls.get_s3_client()
         oneHour = 3600

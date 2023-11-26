@@ -1,8 +1,9 @@
 from subprocess import run
 from smb.SMBHandler import SMBHandler
 from predictions_map.models import Department, DepartmentData
-from predictions_map.s3_client import S3Upload
+from predictions_map.s3_client import S3Client, S3Upload
 from predictions_map.utils import compute_s3_object_name, get_formatted_file_size
+from os import listdir
 
 departments_data_to_upload = [
     ("06", "2020", "11,5 Go"),
@@ -20,43 +21,53 @@ departments_data_to_upload = [
 ]
 
 
-def upload_zip_files(departments_data):
+def upload_zip_files():
     print("C'est parti pour le téléversement !")
     s3Upload = S3Upload()
+    files_list = listdir("tmp/cosia_upload")
+    for file_name in files_list:
+        print(file_name)
+        all_objects_name = S3Client.get_all_objects_name_in_bucket()
+        file_already_in_s3 = file_name in all_objects_name
+        # With a prompt give the possibility of re-write
+        if file_already_in_s3:
+            continue
 
-    for tuple_department_data_number_and_year in departments_data:
-        (number, year, file_size) = tuple_department_data_number_and_year
-        print(f"--- {number} - {year} ---")
+        s3Upload.upload(f"tmp/cosia_upload/{file_name}", file_name)
 
-        department = Department.objects.get(number=number)
-        is_department_data_already_exists = DepartmentData.objects.filter(
-            department=department, year=year
-        ).exists()
+    # for tuple_department_data_number_and_year in departments_data:
+    #     (number, year, file_size) = tuple_department_data_number_and_year
+    #     print(f"--- {number} - {year} ---")
 
-        if is_department_data_already_exists:
-            replace_file = input(
-                f"Le départment {number} a déjà des données associées au millésime {year}.\nVeux-tu téléverser le fichier zip et potentiellement remplacer le fichier déjà existant ? (oui/non)"
-            )
-            while replace_file not in ["oui", "non"]:
-                replace_file = input(f"Je n'ai pas compris. oui ou non ?")
+    #     department = Department.objects.get(number=number)
+    #     is_department_data_already_exists = DepartmentData.objects.filter(
+    #         department=department, year=year
+    #     ).exists()
 
-            if replace_file == "non":
-                continue
+    #     if is_department_data_already_exists:
+    #         replace_file = input(
+    #             f"Le départment {number} a déjà des données associées au millésime {year}.\nVeux-tu téléverser le fichier zip et potentiellement remplacer le fichier déjà existant ? (oui/non)"
+    #         )
+    #         while replace_file not in ["oui", "non"]:
+    #             replace_file = input(f"Je n'ai pas compris. oui ou non ?")
 
-        file_name = compute_s3_object_name(number, year)
-        zip_file_path = f"tmp/{file_name}"
-        cmd_to_execute = f"smbget smb://store/store-echange/EBookjans/CoSIA_proto/{file_name} -o {zip_file_path}"
-        run(cmd_to_execute, shell=True, executable="/bin/bash")
+    #         if replace_file == "non":
+    #             continue
 
-        s3Upload.upload(zip_file_path, file_name)
+    #     file_name = compute_s3_object_name(number, year)
+    #     zip_file_path = f"tmp/{file_name}"
+    #     cmd_to_execute = f"smbget smb://store/store-echange/EBookjans/CoSIA_proto/{file_name} -o {zip_file_path}"
+    #     run(cmd_to_execute, shell=True, executable="/bin/bash")
 
-        zip_size = get_formatted_file_size(zip_file_path)
-        departmentData = DepartmentData(
-            department=department,
-            year=year,
-            s3_object_name=file_name,
-            zip_size=zip_size,
-            file_size=file_size,
-        )
-        departmentData.full_clean()
-        departmentData.save()
+    #     s3Upload.upload(zip_file_path, file_name)
+
+    #     zip_size = get_formatted_file_size(zip_file_path)
+    #     departmentData = DepartmentData(
+    #         department=department,
+    #         year=year,
+    #         s3_object_name=file_name,
+    #         zip_size=zip_size,
+    #         file_size=file_size,
+    #     )
+    #     departmentData.full_clean()
+    #     departmentData.save()
