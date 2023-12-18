@@ -23,7 +23,7 @@ departments_data_to_upload = [
 
 
 def upload_zip_files(env):
-    s3Upload = get_s3_upload_friom_env(env)
+    s3Upload = get_s3_upload_from_env(env)
 
     print(f"C'est parti pour le téléversement sur {env} !")
 
@@ -39,6 +39,7 @@ def upload_zip_files(env):
         s3Upload.upload(f"tmp/cosia_upload/{file_name}", file_name)
 
 
+# TODO separer
 def update_department_data_based_on_s3_bucket():
     objects_in_bucket = S3Client.get_all_objects_in_bucket()
 
@@ -90,7 +91,7 @@ def update_department_data_based_on_s3_bucket():
     #     departmentData.save()
 
 
-def get_s3_upload_friom_env(env):
+def get_s3_upload_from_env(env):
     if env not in ["prd", "qlf", "dev"]:
         raise ValueError(f"{env} n'est pas disponible. Choisir parmi prd, qlf et dev.")
 
