@@ -23,7 +23,7 @@ S3_BUCKET = ...
 2. Compose up with docker
 
 ```zsh
-docker compose up -f docker/compose.dev.yml --build
+docker compose -f docker/compose.dev.yml up --build
 ```
 
 3. Run migrations
@@ -41,7 +41,7 @@ docker compose -f docker/compose.dev.yml run web python3 manage.py createsuperus
 4. Load departments
 
 ```zsh
-docker compose -f docker/compose.dev.yml run web python3 shell
+docker compose -f docker/compose.dev.yml exec web python3 manage.py shell
 ```
 
 Then
