@@ -12,13 +12,19 @@ S3_SECRET_ACCESS_KEY = os.getenv("S3_SECRET_ACCESS_KEY")
 
 class S3Client:
     @classmethod
-    def get_s3_client(cls):
+    def get_s3_client(
+        cls,
+        s3_host=S3_HOST,
+        s3_region_name=S3_REGION_NAME,
+        s3_access_key_id=S3_ACCESS_KEY_ID,
+        s3_secret_access_key=S3_SECRET_ACCESS_KEY,
+    ):
         return client(
-            endpoint_url=S3_HOST,
-            aws_access_key_id=S3_ACCESS_KEY_ID,
-            aws_secret_access_key=S3_SECRET_ACCESS_KEY,
+            endpoint_url=s3_host,
+            aws_access_key_id=s3_access_key_id,
+            aws_secret_access_key=s3_secret_access_key,
             service_name="s3",
-            region_name=S3_REGION_NAME,
+            region_name=s3_region_name,
         )
 
     @classmethod
@@ -49,8 +55,8 @@ class S3Client:
 
 
 class S3Upload:
-    def __init__(self):
-        self.s3 = S3Client.get_s3_client()
+    def __init__(self, **kwargs):
+        self.s3 = S3Client.get_s3_client(kwargs)
 
     def upload_callback(self, size):
         self.pg.update(self.pg.currval + size)
