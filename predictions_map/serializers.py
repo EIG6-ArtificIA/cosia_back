@@ -43,7 +43,6 @@ class DepartmentDataSerializer(DynamicFieldsModelSerializer):
         fields = [
             "id",
             "year",
-            "download_link",
             "department",
             "file_size",
             "zip_size",

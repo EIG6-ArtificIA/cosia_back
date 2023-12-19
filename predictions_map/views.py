@@ -37,7 +37,6 @@ def department_detail(request, pk):
 READ_ONLY_DEPARTMENT_DATA_FIELDS = [
     "id",
     "year",
-    "download_link",
     "department",
     "file_size",
     "zip_size",

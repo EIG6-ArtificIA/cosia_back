@@ -21,7 +21,6 @@ DEPARTMENT_SERIALIZER_SCHEMA = {
 DEPARTMENT_DATA_SERIALIZER_SCHEMA = {
     "id": int,
     "year": int,
-    "download_link": str,
     "department": {"number": str, "name": str},
     "file_size": str,
     "zip_size": str,
@@ -63,7 +62,7 @@ class DepartmentDataApiTestCase(APITestCase):
         manche = DepartmentFactory(name="Manche", number="50")
 
         self.cote_dor_data = DepartmentDataFactory(
-            department=cote_dor, year=1850, download_link="http://rigo.lo"
+            department=cote_dor, year=1850, s3_object_name="CoSIA_D021_1850"
         )
         DepartmentDataFactory(department=finistere)
         DepartmentDataFactory(department=manche, s3_object_name="")
@@ -84,7 +83,6 @@ class DepartmentDataApiTestCase(APITestCase):
                 "id": self.cote_dor_data.id,
                 "department": {"number": "21", "name": "Côte d'Or"},
                 "year": 1850,
-                "download_link": "http://rigo.lo",
                 "file_size": "8,4 Go",
                 "zip_size": "1,0 Go",
             },
