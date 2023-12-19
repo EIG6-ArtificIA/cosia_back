@@ -16,7 +16,7 @@ def upload_zip_files(env):
     s3_client.print_formated_all_objects_in_bucket()
 
     for file_name in files_list:
-        print(file_name)
+        print(file_name, end="\n\n")
         file_already_in_s3 = file_name in all_objects_name
 
         if file_already_in_s3:

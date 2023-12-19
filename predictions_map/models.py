@@ -56,7 +56,7 @@ class DepartmentData(models.Model):
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
-    file_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
+    file_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR], blank=True)
     zip_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
     s3_object_name = models.CharField(max_length=300, blank=True)
 
