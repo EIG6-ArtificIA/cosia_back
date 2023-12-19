@@ -86,18 +86,6 @@ class DepartmentDataTestCase(TestCase):
         max_date = DepartmentDataFactory(year=2100)
         max_date.full_clean()
 
-    def test_download_link_validation(self):
-        not_a_link = DepartmentDataFactory(download_link="http://coucou")
-
-        with self.assertRaises(ValidationError):
-            not_a_link.full_clean()
-
-        http_link = DepartmentDataFactory(download_link="http://coucou.co")
-        http_link.full_clean()
-
-        https_link = DepartmentDataFactory(download_link="https://coucou.fr")
-        https_link.full_clean()
-
     def test_str_property(self):
         yonne = Department.objects.get(name="Yonne")
         yonne_data = DepartmentDataFactory(department=yonne, year=2000)

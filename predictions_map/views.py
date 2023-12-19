@@ -37,7 +37,6 @@ def department_detail(request, pk):
 READ_ONLY_DEPARTMENT_DATA_FIELDS = [
     "id",
     "year",
-    "download_link",
     "department",
     "file_size",
     "zip_size",
@@ -49,7 +48,6 @@ READ_ONLY_DEPARTMENT_DATA_FIELDS = [
 def department_data_list(request):
     if request.method == "GET":
         only_with_s3_object_name = request.query_params.get("only_with_s3_object_name")
-        print(only_with_s3_object_name)
         if only_with_s3_object_name is None:
             department_data = DepartmentData.objects.all()
         else:

@@ -2,7 +2,6 @@ from django.contrib.gis.db import models
 from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
-    URLValidator,
     RegexValidator,
 )
 
@@ -54,14 +53,10 @@ class DepartmentData(models.Model):
     )
 
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    # TODO remove it once front uses s3_download_url
-    download_link = models.CharField(
-        max_length=300, validators=[URLValidator(schemes=["http", "https"])]
-    )
     year = models.IntegerField(
         validators=[MinValueValidator(1850), MaxValueValidator(2100)]
     )
-    file_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
+    file_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR], blank=True)
     zip_size = models.CharField(max_length=10, validators=[FILE_VALIDATOR])
     s3_object_name = models.CharField(max_length=300, blank=True)
 

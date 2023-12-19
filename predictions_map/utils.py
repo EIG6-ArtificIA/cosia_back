@@ -32,8 +32,3 @@ def format_file_size(file_size):
 
     size_in_GB = size_in_MB / (2**10)
     return ("%.1f Go" % size_in_GB).replace(".", ",")
-
-
-def get_formatted_file_size(file_path):
-    file_size = getsize(file_path)
-    return format_file_size(file_size)
