@@ -11,7 +11,6 @@ class DepartmentDataAdmin(admin.ModelAdmin):
 
     def delete_queryset(self, request, queryset):
         for department_data in queryset:
-            print(department_data)
             department_data.delete()
 
 

@@ -1,6 +1,3 @@
-from os.path import getsize
-
-
 def check_structure(struct, schema):
     if isinstance(struct, dict) and isinstance(schema, dict):
         # struct is a dict of types or other dicts
