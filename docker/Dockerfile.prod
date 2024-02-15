@@ -60,7 +60,7 @@ RUN chmod +x /home/app/web/entrypoint.sh
 # copy project
 COPY . .
 
-RUN chown -R www-data:www-data .
+RUN chown -R www-data:www-data /home/app
 
 USER www-data
 
