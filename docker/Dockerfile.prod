@@ -60,7 +60,7 @@ RUN chmod +x /home/app/web/entrypoint.sh
 # copy project
 COPY . .
 
-RUN mkdir -p /home/app/web/staticfiles/admin \
+RUN mkdir -p /home/app/web/staticfiles/admin/css /home/app/web/staticfiles/admin/fonts /home/app/web/staticfiles/admin/img /home/app/web/staticfiles/admin/js \
  && chmod -R 777 /home/app/web/staticfiles/admin
 
 RUN chown -R www-data:www-data .
