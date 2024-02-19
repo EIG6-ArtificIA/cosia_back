@@ -66,4 +66,4 @@ USER www-data
 
 # run entrypoint.sh
 ENTRYPOINT [ "/home/app/web/entrypoint.sh" ]
-CMD [ "gunicorn", "cosia_back.wsgi:application", "--bind", "0.0.0.0:80" , "--worker-tmp-dir", "/mem"]
+CMD [ "gunicorn", "cosia_back.wsgi:application", "--bind", "0.0.0.0:8000" , "--worker-tmp-dir", "/mem"]
